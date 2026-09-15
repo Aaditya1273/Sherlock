@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   description:
     "Forward an email. Sherlock investigates the web, finds what you're entitled to, builds the evidence, and helps you act.",
-  icons: { icon: '/favicon.svg' },
+  icons: { icon: '/favicon.ico', shortcut: '/favicon.ico', apple: '/logo.png' },
   openGraph: {
     title: 'Sherlock — Give Your Inbox a Browser',
     description:

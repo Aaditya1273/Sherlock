@@ -40,7 +40,7 @@ export function SignIn() {
     <div className="signin-wrap">
       <form className="card signin" onSubmit={submit}>
         <div className="signin-brand">
-          <Logo size={26} />
+          <Logo size={34} />
           <span>Sherlock</span>
         </div>
         <p className="muted" style={{ fontSize: 'var(--text-sm)' }}>

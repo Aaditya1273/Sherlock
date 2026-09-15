@@ -46,7 +46,7 @@ export function Shell({ children }: { children: ReactNode }) {
     <div className="shell">
       <aside className="shell-nav">
         <Link href="/" className="shell-brand">
-          <Logo size={22} />
+          <Logo size={28} />
           <span>Sherlock</span>
         </Link>
 

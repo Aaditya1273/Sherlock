@@ -39,19 +39,20 @@ const CHIPS = [
   { label: 'Evidence', glyph: '¶' },
 ];
 
-const LOGO_ROWS: { name: string; slug?: string }[][] = [
+/** `src` is a supplied wordmark in public/; `slug` a public-CDN icon; neither, a styled name. */
+const LOGO_ROWS: { name: string; src?: string; slug?: string; w?: number }[][] = [
   [
     { name: 'AgentMail' },
-    { name: 'Firecrawl' },
-    { name: 'OpenAI' },
-    { name: 'Convex', slug: 'convex' },
-    { name: 'Next.js', slug: 'nextdotjs' },
+    { name: 'Firecrawl', src: '/firecrawl.png', w: 118 },
+    { name: 'OpenAI', src: '/openai.png', w: 100 },
+    { name: 'Convex', src: '/convex.png', w: 100 },
+    { name: 'Vercel', src: '/vercel.png', w: 104 },
   ],
   [
+    { name: 'Next.js', slug: 'nextdotjs' },
     { name: 'React', slug: 'react' },
     { name: 'TypeScript', slug: 'typescript' },
     { name: 'GitHub', slug: 'github' },
-    { name: 'Vercel', slug: 'vercel' },
     { name: 'Geist' },
   ],
 ];
@@ -142,11 +143,11 @@ const CHAPTERS: Chapter[] = [
   },
 ];
 
-const STACK_TILES = [
-  { name: 'AgentMail', slug: undefined, x: 8, y: 14, d: 0 },
-  { name: 'Firecrawl', slug: undefined, x: 62, y: 6, d: 1.2 },
-  { name: 'OpenAI', slug: undefined, x: 34, y: 42, d: 0.6 },
-  { name: 'Convex', slug: 'convex', x: 70, y: 52, d: 1.8 },
+const STACK_TILES: { name: string; src?: string; slug?: string; w?: number; x: number; y: number; d: number }[] = [
+  { name: 'AgentMail', x: 8, y: 14, d: 0 },
+  { name: 'Firecrawl', src: '/firecrawl.png', w: 118, x: 60, y: 6, d: 1.2 },
+  { name: 'OpenAI', src: '/openai.png', w: 100, x: 16, y: 44, d: 0.6 },
+  { name: 'Convex', src: '/convex.png', w: 100, x: 72, y: 56, d: 1.8 },
   { name: 'Next.js', slug: 'nextdotjs', x: 12, y: 72, d: 0.9 },
   { name: 'TypeScript', slug: 'typescript', x: 48, y: 82, d: 1.5 },
 ];
@@ -245,10 +246,16 @@ export function Landing() {
             <Reveal key={index} className="logo-row" delay={index * 120}>
               {row.map((logo) => (
                 <span key={logo.name} className="logo">
-                  {logo.slug && (
-                                        <img src={`https://cdn.simpleicons.org/${logo.slug}/9a9a9a`} alt="" width={20} height={20} loading="lazy" />
+                  {logo.src ? (
+                    <img className="wordmark" src={logo.src} alt={logo.name} loading="lazy" style={css({ '--w': `${logo.w ?? 110}px` })} />
+                  ) : (
+                    <>
+                      {logo.slug && (
+                        <img src={`https://cdn.simpleicons.org/${logo.slug}/9a9a9a`} alt="" width={20} height={20} loading="lazy" />
+                      )}
+                      {logo.name}
+                    </>
                   )}
-                  {logo.name}
                 </span>
               ))}
             </Reveal>
@@ -340,12 +347,18 @@ export function Landing() {
                 className="tile"
                 style={css({ '--x': `${tile.x}%`, '--y': `${tile.y}%`, '--d': `${tile.d}s` })}
               >
-                {tile.slug ? (
-                                    <img src={`https://cdn.simpleicons.org/${tile.slug}/171717`} alt="" width={22} height={22} loading="lazy" />
+                {tile.src ? (
+                  <img className="wordmark" src={tile.src} alt={tile.name} loading="lazy" style={css({ '--w': `${tile.w ?? 110}px` })} />
                 ) : (
-                  <span className="tile-mark">{tile.name.slice(0, 1)}</span>
+                  <>
+                    {tile.slug ? (
+                      <img src={`https://cdn.simpleicons.org/${tile.slug}/171717`} alt="" width={22} height={22} loading="lazy" />
+                    ) : (
+                      <span className="tile-mark">{tile.name.slice(0, 1)}</span>
+                    )}
+                    <span>{tile.name}</span>
+                  </>
                 )}
-                <span>{tile.name}</span>
               </div>
             ))}
             <div className="dotfield-centre" aria-hidden="true">
@@ -459,7 +472,7 @@ export function Landing() {
             {LOGO_ROWS.flat().slice(0, 8).map((logo) => (
               <span key={logo.name} className="cta-dot" aria-hidden="true">
                 {logo.slug ? (
-                                    <img src={`https://cdn.simpleicons.org/${logo.slug}/ffffff`} alt="" width={14} height={14} loading="lazy" />
+                  <img src={`https://cdn.simpleicons.org/${logo.slug}/ffffff`} alt="" width={14} height={14} loading="lazy" />
                 ) : (
                   logo.name.slice(0, 1)
                 )}
@@ -526,7 +539,7 @@ function Nav() {
   return (
     <nav className="nav">
       <div className="wrap nav-inner">
-        <Link href="/" className="brand"><Logo size={22} /><span>Sherlock</span></Link>
+        <Link href="/" className="brand"><Logo size={30} /><span>Sherlock</span></Link>
         <div className="nav-links">
           {NAV.map((item) =>
             item.external ? (
@@ -558,7 +571,7 @@ function DashboardFrame() {
   return (
     <div className="frame" role="img" aria-label="An example Sherlock inbox">
       <div className="frame-side">
-        <div className="frame-brand"><Logo size={15} /><span>Sherlock</span></div>
+        <div className="frame-brand"><Logo size={20} /><span>Sherlock</span></div>
         {['Inbox', 'Investigations', 'Claims', 'Activity', 'Ask Sherlock', 'Settings'].map((item, i) => (
           <span key={item} className={`frame-nav${i === 0 ? ' is-active' : ''}`}>
             {item}
@@ -705,11 +718,11 @@ Sent via Sherlock.`}</pre>
 
 /** Centre node with four satellites and flowing connectors. */
 function NetworkVisual() {
-  const nodes = [
+  const nodes: { name: string; role: string; x: number; y: number; src?: string; w?: number }[] = [
     { name: 'AgentMail', role: 'inbox', x: 12, y: 24 },
-    { name: 'Firecrawl', role: 'browser', x: 82, y: 22 },
-    { name: 'OpenAI', role: 'reasoning', x: 14, y: 76 },
-    { name: 'Convex', role: 'memory', x: 84, y: 78 },
+    { name: 'Firecrawl', role: 'browser', x: 82, y: 22, src: '/firecrawl.png', w: 118 },
+    { name: 'OpenAI', role: 'reasoning', x: 14, y: 76, src: '/openai.png', w: 100 },
+    { name: 'Convex', role: 'memory', x: 84, y: 78, src: '/convex.png', w: 92 },
   ];
   return (
     <div className="network" role="img" aria-label="Sherlock's trust boundary between the four systems">
@@ -731,7 +744,7 @@ function NetworkVisual() {
       </div>
       {nodes.map((node, i) => (
         <div key={node.name} className="network-node" style={css({ '--x': `${node.x}%`, '--y': `${node.y}%`, '--d': `${i * 0.5}s` })}>
-          <strong>{node.name}</strong>
+          {node.src ? <img className="wordmark" src={node.src} alt={node.name} loading="lazy" style={css({ '--w': `${node.w ?? 110}px` })} /> : <strong>{node.name}</strong>}
           <span>{node.role}</span>
         </div>
       ))}
@@ -782,7 +795,7 @@ function Footer() {
     <footer className="foot">
       <div className="wrap foot-inner">
         <div className="foot-brand">
-          <div className="brand"><Logo size={22} /><span>Sherlock</span></div>
+          <div className="brand"><Logo size={28} /><span>Sherlock</span></div>
           <p>Give your inbox a browser.</p>
         </div>
         <div className="foot-cols">

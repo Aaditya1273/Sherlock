@@ -216,6 +216,21 @@
 .logo { display: inline-flex; align-items: center; gap: 8px; font-size: var(--text-md); font-weight: 600; letter-spacing: -0.02em; color: #9a9a9a; filter: grayscale(1); transition: color 0.2s ease, filter 0.2s ease; }
 .logo:hover { color: var(--ink); filter: none; }
 .logo img { width: 20px; height: 20px; }
+/* Supplied wordmarks: height-normalised, and multiplied so an opaque white
+   background vanishes on any light ground. */
+/* The supplied PNGs carry wide blank margins; a fixed box with `cover` crops
+   them away so every wordmark reads at a consistent cap height. Written as
+   `img.wordmark` under each parent so it outranks the generic `.logo img` and
+   `.tile img` icon sizing. */
+.landing img.wordmark,
+.logo img.wordmark {
+  width: var(--w, 110px); height: 28px; object-fit: cover; object-position: center;
+  mix-blend-mode: multiply; display: block;
+}
+.logo img.wordmark { opacity: 0.55; transition: opacity 0.2s ease; }
+.logo:hover img.wordmark { opacity: 1; }
+.tile img.wordmark { height: 22px; width: calc(var(--w, 110px) * 0.8); }
+.network-node img.wordmark { height: 20px; width: calc(var(--w, 110px) * 0.78); margin-bottom: 3px; }
 
 /* -------------------------------------------------------------- manifesto -- */
 .manifesto { padding: var(--space-24) 0; border-top: 1px solid var(--line-soft); }
