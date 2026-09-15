@@ -3,12 +3,17 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 /**
- * One panel, three visuals.
+ * Feature reel — hands-off.
  *
- * The three sub-features under a chapter act as tabs. The panel above
- * cross-fades to the active one, advances on a timer, pauses while hovered,
- * and any tab can be picked directly. A thin progress bar on the active tab
- * shows how long until the next. Reduced-motion disables auto-advance.
+ * One panel plays a chapter's three visuals in a loop. Nothing to click: the
+ * reel advances on its own, the caption strip beneath shows which of the
+ * three is on screen with a sliding highlight and a filling progress line,
+ * and a small counter keeps the position legible. Hovering pauses it so a
+ * reader can dwell. Reduced motion shows the first visual at rest.
+ *
+ * The transition is a deck shuffle: the outgoing visual lifts, softens and
+ * recedes while the next rises from below with a slight tilt — one motion,
+ * not a fade.
  */
 
 const INTERVAL_MS = 6500;
@@ -19,69 +24,81 @@ export interface FeatureTab {
   body: string;
 }
 
-export function FeatureTabs({ tabs, visuals }: { tabs: FeatureTab[]; visuals: ReactNode[] }) {
+export function FeatureReel({ tabs, visuals }: { tabs: FeatureTab[]; visuals: ReactNode[] }) {
   const [active, setActive] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
   const [cycle, setCycle] = useState(0);
+  const [inView, setInView] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const reduced = useRef(false);
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const node = rootRef.current;
+    if (!node) return;
+    // Only run the clock while the reel is on screen.
+    const io = new IntersectionObserver((entries) => setInView(entries.some((e) => e.isIntersecting)), {
+      threshold: 0.25,
+    });
+    io.observe(node);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
-    if (paused || reduced.current) return;
+    if (paused || !inView || reduced.current) return;
     const id = window.setTimeout(() => {
+      setPrev(active);
       setActive((i) => (i + 1) % tabs.length);
       setCycle((c) => c + 1);
     }, INTERVAL_MS);
     return () => window.clearTimeout(id);
-  }, [active, paused, cycle, tabs.length]);
+  }, [active, paused, inView, cycle, tabs.length]);
+
+  const running = inView && !paused;
 
   return (
     <div
-      className="ftabs"
+      ref={rootRef}
+      className="reel"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="ftabs-panel">
-        {visuals.map((visual, i) => (
-          <div key={i} className={`ftabs-slide${i === active ? ' is-active' : ''}`} aria-hidden={i !== active}>
-            {visual}
-          </div>
-        ))}
+      <div className="reel-panel">
+        {visuals.map((visual, i) => {
+          const state = i === active ? 'is-active' : i === prev ? 'is-leaving' : '';
+          return (
+            <div key={i} className={`reel-slide ${state}`.trim()} aria-hidden={i !== active}>
+              {visual}
+            </div>
+          );
+        })}
+        <span className="reel-counter" aria-hidden="true">
+          <span key={active} className="reel-counter-n">{String(active + 1).padStart(2, '0')}</span>
+          <span className="reel-counter-of">/ {String(tabs.length).padStart(2, '0')}</span>
+        </span>
       </div>
 
-      <div className="ftabs-list" role="tablist">
+      <ol className="reel-captions" aria-label="What this shows">
+        <span className="reel-highlight" style={{ transform: `translateX(${active * 100}%)` }} aria-hidden="true" />
         {tabs.map((tab, i) => (
-          <button
-            key={tab.title}
-            role="tab"
-            type="button"
-            aria-selected={i === active}
-            className={`ftab${i === active ? ' is-active' : ''}`}
-            onClick={() => {
-              setActive(i);
-              setCycle((c) => c + 1);
-            }}
-          >
-            <span className="ftab-bar" aria-hidden="true">
+          <li key={tab.title} className={`reel-caption${i === active ? ' is-active' : ''}`} aria-current={i === active}>
+            <span className="reel-caption-bar" aria-hidden="true">
               <span
                 key={`${i}-${cycle}`}
-                className="ftab-bar-fill"
-                style={{ animationDuration: `${INTERVAL_MS}ms`, animationPlayState: paused ? 'paused' : 'running' }}
+                className="reel-caption-fill"
+                style={{
+                  animationDuration: `${INTERVAL_MS}ms`,
+                  animationPlayState: running ? 'running' : 'paused',
+                }}
               />
             </span>
-            <span className="ftab-icon" aria-hidden="true">{tab.icon}</span>
-            <span className="ftab-title">{tab.title}</span>
-            <span className="ftab-body">{tab.body}</span>
-            <span className="ftab-more">
-              Learn more
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
-            </span>
-          </button>
+            <span className="reel-caption-icon" aria-hidden="true">{tab.icon}</span>
+            <span className="reel-caption-title">{tab.title}</span>
+            <span className="reel-caption-body">{tab.body}</span>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   );
 }

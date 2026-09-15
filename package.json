@@ -1,7 +1,7 @@
 {
   "name": "sherlock",
   "version": "1.0.0",
-  "description": "Sherlock \u2014 Give Your Inbox a Browser. An email-native AI agent that investigates the web, builds evidence, and helps you act.",
+  "description": "Sherlock — Give Your Inbox a Browser. An email-native AI agent that investigates the web, builds evidence, and helps you act.",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -21,6 +21,7 @@
     "@convex-dev/self-static-hosting": "github:get-convex/self-static-hosting",
     "convex": "^1.31.7",
     "next": "^16.3.5",
+    "ogl": "^1.0.11",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },

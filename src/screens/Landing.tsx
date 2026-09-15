@@ -2,7 +2,8 @@ import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { Logo } from '../components/Logo';
 import { CountUp, Reveal } from '../components/landing/motion';
-import { FeatureTabs } from '../components/landing/FeatureTabs';
+import { FeatureReel } from '../components/landing/FeatureTabs';
+import { LightfallBg } from '../components/landing/LightfallBg';
 import './Landing.css';
 
 /**
@@ -64,6 +65,8 @@ type Chapter = {
   lede: string;
   link: string;
   visuals: [string, string, string];
+  /** Show the first visual only, at rest, with the sub-features as a static row. */
+  constant?: boolean;
   minis: { glyph: string; title: string; body: string }[];
   principle: { quote: string; source: string; tag: string };
 };
@@ -117,7 +120,8 @@ const CHAPTERS: Chapter[] = [
     title: 'Untrusted by default',
     lede: 'Every email and page is sanitised before a model sees it.',
     link: 'Read the trust model',
-    visuals: ['sanitise', 'gate', 'network'],
+    visuals: ['network', 'sanitise', 'gate'],
+    constant: true,
     minis: [
       { glyph: 'shield', title: 'Text is data', body: 'Instruction-shaped spans are neutralised.' },
       { glyph: 'key', title: 'Server-side auth', body: 'One gate on every case-data function.' },
@@ -436,8 +440,8 @@ export function Landing() {
 
       {/* ------------------------------------------------------------- cta */}
       <section className="cta">
+        <LightfallBg />
         <div className="cta-curve" aria-hidden="true" />
-        <div className="cta-orb" aria-hidden="true" />
         <div className="wrap cta-inner">
           <Reveal>
             <h2>Forward one email.</h2>
@@ -476,12 +480,29 @@ function ChapterSection({ chapter }: { chapter: Chapter }) {
           <Link href="/app" className="text-link">{chapter.link} <span aria-hidden="true">→</span></Link>
         </Reveal>
 
-        <Reveal delay={80}>
-          <FeatureTabs
-            tabs={chapter.minis.map((mini) => ({ icon: <Glyph name={mini.glyph} />, title: mini.title, body: mini.body }))}
-            visuals={chapter.visuals.map((name) => <Visual key={name} name={name} />)}
-          />
-        </Reveal>
+        {chapter.constant ? (
+          <>
+            <Reveal className="panel is-constant" delay={80}>
+              <Visual name={chapter.visuals[0]} />
+            </Reveal>
+            <div className="minis">
+              {chapter.minis.map((mini, index) => (
+                <Reveal key={mini.title} className="mini" delay={index * 90}>
+                  <span className="mini-glyph" aria-hidden="true"><Glyph name={mini.glyph} /></span>
+                  <h3>{mini.title}</h3>
+                  <p>{mini.body}</p>
+                </Reveal>
+              ))}
+            </div>
+          </>
+        ) : (
+          <Reveal delay={80}>
+            <FeatureReel
+              tabs={chapter.minis.map((mini) => ({ icon: <Glyph name={mini.glyph} />, title: mini.title, body: mini.body }))}
+              visuals={chapter.visuals.map((name) => <Visual key={name} name={name} />)}
+            />
+          </Reveal>
+        )}
 
         <Reveal as="figure" className="principle" delay={120}>
           <blockquote>&ldquo;{chapter.principle.quote}&rdquo;</blockquote>

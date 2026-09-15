@@ -329,31 +329,34 @@
 .text-link span { transition: transform 0.2s var(--ease); }
 .text-link:hover span { transform: translateX(3px); }
 
-/* Feature tabs: one panel, three visuals; the minis below are the tabs. */
-.ftabs { display: flex; flex-direction: column; gap: var(--space-6); margin-bottom: var(--space-10); }
-/* Every slide occupies the same centred box; only opacity and a small lift
-   change, so the outgoing and incoming visuals never sit at different heights. */
-.ftabs-panel { position: relative; background: var(--panel); border: 1px solid var(--line-soft); border-radius: 18px; height: 600px; overflow: hidden; }
-/* Outgoing drops quickly; incoming rises after a beat, so the two barely overlap. */
-.ftabs-slide { position: absolute; inset: var(--space-6); display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(10px) scale(0.99); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
-.ftabs-slide > * { width: 100%; }
-.ftabs-slide.is-active { opacity: 1; transform: none; pointer-events: auto; transition: opacity 0.7s var(--ease) 0.25s, transform 0.7s var(--ease) 0.25s; }
-.ftabs-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); }
-.ftab { position: relative; text-align: left; display: flex; flex-direction: column; gap: 6px; padding: var(--space-4) 0 0 var(--space-4); border-left: 1px solid var(--line); color: var(--ink-faint); transition: color 0.3s ease; cursor: pointer; }
-.ftab-bar { position: absolute; left: -1px; top: 0; bottom: 0; width: 2px; overflow: hidden; background: transparent; }
-.ftab-bar-fill { display: block; width: 100%; height: 100%; background: var(--attention); transform: scaleY(0); transform-origin: top; }
-.ftab.is-active .ftab-bar-fill { animation: fill-down linear forwards; }
-@keyframes fill-down { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-.ftab-icon { color: var(--ink-faint); display: inline-flex; }
-.ftab-icon svg { width: 18px; height: 18px; }
-.ftab-title { font-size: var(--text-base); font-weight: 600; color: var(--ink-faint); transition: color 0.3s ease; }
-.ftab-body { font-size: var(--text-sm); line-height: 1.55; }
-.ftab-more { display: inline-flex; align-items: center; gap: 4px; font-size: var(--text-sm); font-weight: 500; margin-top: 2px; }
-.ftab.is-active, .ftab.is-active .ftab-icon { color: var(--ink-muted); }
-.ftab.is-active .ftab-title { color: var(--ink); }
-.ftab.is-active .ftab-icon { color: var(--ink); }
-.ftab.is-active .ftab-more { color: var(--attention); }
-.ftab:hover .ftab-title { color: var(--ink); }
+/* Feature reel: one panel, three visuals, no controls. */
+.reel { display: flex; flex-direction: column; gap: var(--space-5); margin-bottom: var(--space-10); }
+.reel-panel { position: relative; background: var(--panel); border: 1px solid var(--line-soft); border-radius: 18px; height: 600px; overflow: hidden; perspective: 1400px; }
+/* Deck shuffle: the leaving slide lifts, softens and recedes; the next rises
+   from below with a slight tilt. Every slide shares one centred box. */
+.reel-slide { position: absolute; inset: var(--space-6); display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(56px) rotateX(6deg) scale(0.98); transform-origin: 50% 100%; filter: blur(0); pointer-events: none; will-change: transform, opacity, filter; }
+.reel-slide > * { width: 100%; }
+.reel-slide.is-active { opacity: 1; transform: none; transition: opacity 0.9s var(--ease) 0.12s, transform 1s var(--ease) 0.12s, filter 0.6s ease 0.12s; pointer-events: auto; }
+.reel-slide.is-leaving { opacity: 0; transform: translateY(-36px) scale(0.96); filter: blur(6px); transition: opacity 0.32s ease, transform 0.7s var(--ease), filter 0.4s ease; }
+.reel-counter { position: absolute; right: var(--space-4); top: var(--space-4); font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); display: inline-flex; gap: 4px; align-items: baseline; }
+.reel-counter-n { color: var(--ink); font-weight: 600; animation: rise-in 0.5s var(--ease) both; display: inline-block; }
+/* Captions: three steps with a highlight that slides to the live one. */
+.reel-captions { position: relative; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); overflow: hidden; }
+.reel-highlight { position: absolute; top: 0; bottom: 0; left: 0; width: calc(100% / 3); background: var(--paper-muted); transition: transform 0.7s var(--ease); pointer-events: none; }
+.reel-caption { position: relative; display: flex; flex-direction: column; gap: 4px; padding: var(--space-4) var(--space-5) var(--space-4); color: var(--ink-faint); transition: color 0.4s ease; }
+.reel-caption + .reel-caption { border-left: 1px solid var(--line-soft); }
+.reel-caption-bar { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: transparent; }
+.reel-caption-fill { display: block; height: 100%; width: 100%; background: var(--attention); transform: scaleX(0); transform-origin: left; }
+.reel-caption.is-active .reel-caption-fill { animation: fill-right linear forwards; }
+@keyframes fill-right { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.reel-caption-icon { display: inline-flex; color: var(--ink-faint); transition: color 0.4s ease; }
+.reel-caption-icon svg { width: 18px; height: 18px; }
+.reel-caption-title { font-size: var(--text-base); font-weight: 600; color: var(--ink-faint); transition: color 0.4s ease; }
+.reel-caption-body { font-size: var(--text-sm); line-height: 1.5; }
+.reel-caption.is-active { color: var(--ink-muted); }
+.reel-caption.is-active .reel-caption-title, .reel-caption.is-active .reel-caption-icon { color: var(--ink); }
+.panel.is-constant { display: flex; align-items: center; min-height: 0; }
+.panel.is-constant > * { width: 100%; }
 
 /* secondary visuals — compact, all reusing the card vocabulary */
 .fan { position: relative; padding: var(--space-5); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
@@ -656,13 +659,10 @@
 .changelog-item span { font-size: var(--text-xs); color: var(--ink-faint); }
 
 /* -------------------------------------------------------------------- cta -- */
-.cta { position: relative; overflow: hidden; background: #0b1220; color: #9aa4b8; padding: var(--space-24) 0 var(--space-20, 5rem); text-align: center; margin-top: 80px; }
+.cta { position: relative; overflow: hidden; background: #060b1d; color: #aab4c8; padding: var(--space-24) 0 var(--space-20, 5rem); text-align: center; margin-top: 80px; isolation: isolate; }
+.cta .lightfall { z-index: 0; }
+.cta-curve { z-index: 2; }
 .cta-curve { position: absolute; left: 50%; top: -80px; width: 160%; height: 160px; transform: translateX(-50%); background: var(--paper); border-radius: 0 0 50% 50% / 0 0 100% 100%; }
-.cta-orb {
-  position: absolute; left: 50%; top: 40px; width: 420px; height: 220px; transform: translateX(-50%);
-  background: radial-gradient(closest-side, rgba(129, 140, 248, 0.55), rgba(236, 72, 153, 0.25) 60%, transparent 100%);
-  filter: blur(40px); pointer-events: none; animation: breathe 7s ease-in-out infinite;
-}
 .cta-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-4); padding-top: var(--space-6); }
 .cta h2 { color: #f8fafc; font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 600; letter-spacing: -0.035em; max-width: 18ch; }
 .cta p { max-width: 460px; line-height: 1.6; }
@@ -701,10 +701,13 @@
   .frame-brand { width: 100%; margin-bottom: var(--space-2); }
   .frame-stats { grid-template-columns: repeat(2, 1fr); }
   .float-card { position: static; width: auto; margin-top: var(--space-3); animation: none; }
-  .minis, .bento, .limit-list, .ftabs-list, .fan, .dedupe, .sanitise, .gate, .watch { grid-template-columns: 1fr; }
+  .minis, .bento, .limit-list, .fan, .dedupe, .sanitise, .gate, .watch { grid-template-columns: 1fr; }
   .dedupe-arrow, .gate-arrow { display: none; }
-  .ftabs-panel { height: 720px; }
-  .ftabs-slide { inset: var(--space-3); align-items: flex-start; overflow-y: auto; }
+  .reel-panel { height: 720px; }
+  .reel-slide { inset: var(--space-3); align-items: flex-start; overflow-y: auto; }
+  .reel-captions { grid-template-columns: 1fr; }
+  .reel-highlight { display: none; }
+  .reel-caption + .reel-caption { border-left: none; border-top: 1px solid var(--line-soft); }
   .hero-notch .chips { padding: 0 var(--space-3) var(--space-3); }
   .funnel { grid-template-columns: 1fr; }
   .funnel-arrow { display: none; }
