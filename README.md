@@ -1,1581 +1,415 @@
-# 🕵️ Sherlock
+# Sherlock
 
 ### Give Your Inbox a Browser.
 
-**Sherlock is an email-native AI agent that investigates the web, finds what you're entitled to, builds the evidence, and helps you act on it.**
+**Forward an email. Sherlock investigates the web, finds what you're entitled to, builds the evidence, and helps you act.**
 
-Forward an email. Sherlock turns it into an investigation.
-
-> **AgentMail is the inbox.
-> Firecrawl is the browser.
-> OpenAI is the brain.
-> Convex is the memory and realtime nervous system.**
-
----
-
-[![Built with Convex](https://img.shields.io/badge/Backend-Convex-111111?style=for-the-badge)](https://convex.dev/)
-[![Powered by OpenAI](https://img.shields.io/badge/AI-OpenAI-111111?style=for-the-badge)](https://openai.com/)
-[![Powered by Firecrawl](https://img.shields.io/badge/Web-Firecrawl-111111?style=for-the-badge)](https://firecrawl.dev/)
-[![Powered by AgentMail](https://img.shields.io/badge/Inbox-AgentMail-111111?style=for-the-badge)](https://agentmail.to/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-111111?style=for-the-badge\&logo=typescript)](https://www.typescriptlang.org/)
-
----
-
-## The Problem
-
-The internet has made buying, booking, subscribing, cancelling, and communicating dramatically easier.
-
-It has also created a new problem:
-
-### **People are constantly entitled to something they never have time to claim.**
-
-A receipt arrives.
-
-A price drops.
-
-A flight gets cancelled.
-
-A subscription changes its terms.
-
-A merchant has a refund or price-adjustment policy.
-
-A company owes you an explanation.
-
-A useful clause is buried inside a 4,000-word policy.
-
-A better price exists somewhere else.
-
-And the user is left with the same workflow:
-
-```text
-Read the email
-      ↓
-Figure out what happened
-      ↓
-Search Google
-      ↓
-Find the relevant policy
-      ↓
-Read the policy
-      ↓
-Find the relevant clause
-      ↓
-Compare it with your situation
-      ↓
-Gather proof
-      ↓
-Write the email
-      ↓
-Send it
-      ↓
-Wait
-      ↓
-Follow up
-      ↓
-Repeat
 ```
-
-The problem is not that the information is unavailable.
-
-### The problem is that the workflow between **information** and **action** is still manual.
-
-Sherlock is built to close that gap.
-
----
-
-# The Idea
-
-## What if your inbox had a browser?
-
-Traditional assistants wait for you to ask questions.
-
-Traditional email clients store messages.
-
-Traditional web search gives you information.
-
-Traditional automation executes predefined rules.
-
-Sherlock combines these capabilities into one persistent workflow:
-
-```text
-                    YOUR EMAIL
-                         │
-                         ▼
-                 ┌──────────────┐
-                 │    Sherlock  │
-                 └──────┬───────┘
-                        │
-              Understand the context
-                        │
-                        ▼
-                 Browse the web
-                        │
-                        ▼
-                 Find evidence
-                        │
-                        ▼
-                 Reason about it
-                        │
-                        ▼
-                 Build an action
-                        │
-                        ▼
-                 Ask for approval
-                        │
-                        ▼
-                 Act through email
-                        │
-                        ▼
-                 Keep watching
-```
-
-Sherlock does not stop when it finds an answer.
-
-### It follows the problem toward an outcome.
-
----
-
-# Core Product
-
-The first Sherlock workflow focuses on **purchase and transaction emails**, particularly situations where a user may be entitled to money back.
-
-A user forwards a transaction email to Sherlock.
-
-Sherlock can then:
-
-1. Parse the email and identify the relevant transaction.
-2. Extract useful structured facts.
-3. Identify the merchant or service.
-4. Discover the relevant public policy or terms.
-5. Crawl the source material.
-6. Extract evidence relevant to the transaction.
-7. Determine whether a potential claim exists.
-8. Explain the reasoning.
-9. Draft a claim.
-10. Ask the user for approval.
-11. Send the claim through the email thread.
-12. Track the conversation.
-13. Continue monitoring the case.
-14. Update the user when the state changes.
-
-The goal is simple:
-
-> **Turn “I should probably deal with this” into “Sherlock is dealing with this.”**
-
----
-
-# A Simple Example
-
-### You
-
-Forward a purchase receipt.
-
-### Sherlock
-
-```text
-I found:
-
-Merchant: Example Store
-Order: #48192
-Purchase: $129.99
-
-I found a relevant price-adjustment policy.
-
-A current product price appears to be $109.99.
-
-Potential recovery:
-$20.00
-
-Evidence:
-✓ Original purchase
-✓ Product identity
-✓ Current price
-✓ Relevant policy clause
-
-Claim draft ready.
-```
-
-You approve it.
-
-Sherlock sends the message.
-
-The case becomes:
-
-```text
-INVESTIGATING
-      ↓
-CLAIM READY
-      ↓
-APPROVED
-      ↓
-SENT
-      ↓
-WAITING FOR REPLY
-      ↓
-RESOLVED
-```
-
-The user does not need to remember the case.
-
-Sherlock does.
-
----
-
-# Why Sherlock Is Different
-
-## 1. Email is the interface
-
-Sherlock does not treat email as a notification channel.
-
-### The inbox is part of the product.
-
-The user can communicate with Sherlock through the same medium that already contains the context Sherlock needs.
-
----
-
-## 2. The web is an action surface, not just a search box
-
-Sherlock uses the web to investigate the source material needed to complete a task.
-
-It can move from:
-
-```text
-Email
-  ↓
-Merchant
-  ↓
-Policy
-  ↓
-Terms
-  ↓
-Product
-  ↓
-Evidence
-```
-
-This creates a bridge between the user's private context and the public web.
-
----
-
-## 3. The agent reasons over evidence
-
-Sherlock should not merely return:
-
-> “You may qualify.”
-
-It should be able to explain:
-
-```text
-WHAT HAPPENED
-      +
-WHAT THE POLICY SAYS
-      +
-WHAT THE EVIDENCE SHOWS
-      ↓
-WHY THIS ACTION MAKES SENSE
-```
-
-The product therefore emphasizes **evidence-backed action**, not opaque automation.
-
----
-
-## 4. The workflow persists
-
-A normal AI response is often finished after generation.
-
-A Sherlock investigation is not.
-
-```text
-Generated answer
-      ≠
-Completed task
-```
-
-Sherlock is designed around the second concept.
-
----
-
-## 5. It stays alive
-
-A task can remain open after the original interaction.
-
-That means Sherlock can move through a persistent lifecycle:
-
-```text
-Received
-   ↓
-Investigating
-   ↓
-Claim prepared
-   ↓
-Sent
-   ↓
-Waiting
-   ↓
-Reply received
-   ↓
-Analyzing
-   ↓
-Follow-up
-   ↓
-Resolved
-```
-
-This persistent state is where the product's Convex architecture becomes especially important.
-
----
-
-# Product Philosophy
-
-Sherlock follows five principles.
-
-### **1. Evidence before action**
-
-The system should prefer showing why an action is justified before executing it.
-
-### **2. Human control at consequential moments**
-
-Research can be automated.
-
-Preparation can be automated.
-
-Action can require explicit user approval.
-
-### **3. State is first-class**
-
-An investigation is a durable object, not a transient chatbot response.
-
-### **4. Communication is part of execution**
-
-Sending the message is not an optional add-on. It is part of completing the workflow.
-
-### **5. Background work should create visible value**
-
-Scheduled work exists to move active investigations forward—not to run meaningless automation.
-
----
-
-# Architecture
-
-Sherlock is designed as a four-layer agent system:
-
-```text
-┌──────────────────────────────────────────────────────┐
-│                      SHERLOCK                        │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  AGENTMAIL                OPENAI                     │
-│  Communication            Reasoning                  │
-│                                                      │
-│  ┌───────────────┐       ┌───────────────────────┐   │
-│  │ Inbound email │       │ Extraction             │   │
-│  │ Threads       │       │ Classification         │   │
-│  │ Outbound mail │       │ Evidence reasoning     │   │
-│  │ Replies       │       │ Draft generation       │   │
-│  └───────┬───────┘       └───────────┬───────────┘   │
-│          │                           │               │
-│          └──────────────┬────────────┘               │
-│                         ▼                            │
-│                    CONVEX                           │
-│            Memory / State / Realtime                 │
-│                         │                            │
-│                         ▼                            │
-│                    FIRECRAWL                        │
-│             Web investigation layer                 │
-│                                                      │
-└──────────────────────────────────────────────────────┘
+AgentMail is the inbox.
+Firecrawl is the browser.
+OpenAI is the reasoning.
+Convex is the memory, the state machine, and the live nervous system.
 ```
 
 ---
 
-# Sponsor Stack — By Design, Not Decoration
+## The problem
 
-Sherlock is intentionally structured so each sponsor technology owns a meaningful part of the workflow.
+The information is already public.
 
-| Technology    | Sherlock role                                                                               |
-| ------------- | ------------------------------------------------------------------------------------------- |
-| **Convex**    | Persistent state, database, reactive queries, mutations, workflows, scheduled work, storage |
-| **OpenAI**    | Extraction, reasoning, classification, evidence interpretation, drafting                    |
-| **Firecrawl** | Web discovery, crawling, policy retrieval, source material                                  |
-| **AgentMail** | Agent inbox, inbound messages, outbound communication, threaded conversations               |
+A refund window. A price-adjustment clause. A cancellation entitlement. An EU 14-day return right. It is all written down, on a page anyone can open, in language anyone can read.
 
-The important distinction is:
+What is missing is the twenty minutes between reading your email and doing something about it:
 
-> **Sherlock does not add sponsor technologies after the product was invented. The product is designed around the capabilities they provide.**
+```
+read the email → work out what happened → search → find the policy →
+read the policy → find the clause → compare it to your situation →
+gather proof → write the email → send it → wait → follow up
+```
+
+Nobody does that for a $14 price drop. So the $14 stays with the merchant.
+
+**Sherlock closes the gap between information and action.** You forward. It investigates. You approve.
 
 ---
 
-# 🔄 End-to-End Workflow
+## What Sherlock actually does
+
+You forward a purchase, booking or billing email to your Sherlock address. Then:
+
+1. **Reads the transaction.** Merchant, product, order number, amount, date — extracted as structured data, with `null` where the email genuinely does not say.
+2. **Investigates the merchant.** Firecrawl searches for and reads their own refund, price-match and cancellation pages — scoped to their domain, so the source is the merchant's policy, not a coupon blog's summary of it.
+3. **Builds evidence.** Every relevant clause becomes an evidence card carrying the source URL and the verbatim passage. Nothing is a claim unless you can click through to the page it came from.
+4. **Decides whether you have a case** — and is allowed to say no. A policy that exists but does not cover your situation is a "no". A window that has closed is a "no". A thin case stops rather than producing a shaky letter with an approve button next to it.
+5. **Drafts the claim** citing the exact wording it found.
+6. **Stops and asks you.** This is structural, not a setting.
+7. **Sends it, once you approve**, from your Sherlock inbox so replies come back to the same thread.
+8. **Keeps the case alive.** Re-reads the watched page on a schedule, chases an unanswered claim, reads the merchant's reply and moves the case to its outcome.
+
+---
+
+## Architecture
 
 ```mermaid
 flowchart TD
-    A["User forwards an email"] --> B["AgentMail receives message"]
-    B --> C["Convex stores investigation"]
-    C --> D["OpenAI extracts transaction context"]
-    D --> E["Identify merchant / service"]
-    E --> F["Firecrawl finds relevant web sources"]
-    F --> G["Firecrawl crawls policy / product / terms"]
-    G --> H["OpenAI analyzes evidence"]
-    H --> I["Potential claim detected"]
-    I --> J["Convex creates claim + evidence state"]
-    J --> K["Sherlock drafts action"]
-    K --> L{"User approval"}
-    L -->|Approve| M["AgentMail sends claim"]
-    L -->|Reject| N["Investigation paused"]
-    M --> O["Convex marks case as sent"]
-    O --> P["Wait for merchant response"]
-    P --> Q["AgentMail receives reply"]
-    Q --> R["Convex updates thread"]
-    R --> S["OpenAI analyzes response"]
-    S --> T{"Resolved?"}
-    T -->|No| U["Prepare follow-up"]
-    U --> M
-    T -->|Yes| V["Mark investigation resolved"]
-    V --> W["Update recovery / outcome"]
+    U[You] -->|forward an email| AM[AgentMail inbox]
+    AM -->|signed webhook| HTTP["/api/agentmail/inbound"]
+    HTTP --> ING[Idempotent ingest]
+    ING --> INV[(Investigation)]
+
+    INV --> PIPE[Pipeline action]
+    PIPE --> EX[Extract transaction]
+    PIPE --> RES[Research]
+    PIPE --> REA[Assess + draft]
+
+    EX -.-> OA[OpenAI]
+    REA -.-> OA
+    RES -.-> FC[Firecrawl]
+
+    RES --> EV[(Evidence)]
+    REA --> CL[(Claim)]
+
+    CL --> AP{Human approval}
+    AP -->|approve| SEND[AgentMail send]
+    AP -->|reject| PAUSED[Paused]
+
+    SEND --> TH[Threaded conversation]
+    TH -->|merchant replies| HTTP
+
+    CRON[Hourly cron] --> MON[Monitor sweep]
+    MON -.->|re-read page| FC
+    MON --> INV
+
+    INV -->|live queries| UI[Sherlock UI]
+
+    style AP fill:#fdf3e3,stroke:#b45309,color:#111
+    style INV fill:#e8eef4,stroke:#1c3f5e,color:#111
 ```
+
+Everything in the centre column is Convex: the tables, the mutations that write them, the durable action that orchestrates the pipeline, the cron that keeps cases alive, and the reactive queries the UI subscribes to.
 
 ---
 
-# 🧠 The Agent Loop
+## The investigation lifecycle
 
-Sherlock's agent loop is designed around:
-
-### **Observe → Investigate → Reason → Propose → Act → Observe**
+One durable object, one explicit state machine. No status booleans scattered across tables, and no way to reach `SENT` except through `AWAITING_APPROVAL`.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Received
-
-    Received --> Parsing
-    Parsing --> Investigating
-
-    Investigating --> EvidenceFound
-    EvidenceFound --> Reasoning
-
-    Reasoning --> ClaimReady
-    ClaimReady --> AwaitingApproval
-
-    AwaitingApproval --> Sent: Approved
-    AwaitingApproval --> Paused: Rejected
-
-    Sent --> WaitingForReply
-    WaitingForReply --> ReplyReceived
-
-    ReplyReceived --> Reasoning
-    Reasoning --> FollowUp: More action needed
-    FollowUp --> Sent
-
-    Reasoning --> Resolved: Outcome achieved
-
-    Resolved --> [*]
-    Paused --> [*]
+    [*] --> RECEIVED
+    RECEIVED --> PARSING
+    PARSING --> INVESTIGATING
+    INVESTIGATING --> EVIDENCE_FOUND
+    INVESTIGATING --> REASONING
+    EVIDENCE_FOUND --> REASONING
+    REASONING --> CLAIM_READY
+    REASONING --> RESOLVED: no case to make
+    CLAIM_READY --> AWAITING_APPROVAL
+    AWAITING_APPROVAL --> SENT: you approve
+    AWAITING_APPROVAL --> PAUSED: you reject
+    SENT --> WAITING_FOR_REPLY
+    WAITING_FOR_REPLY --> REPLY_RECEIVED
+    WAITING_FOR_REPLY --> RESOLVED
+    REPLY_RECEIVED --> FOLLOW_UP_READY
+    REPLY_RECEIVED --> RESOLVED
+    FOLLOW_UP_READY --> AWAITING_APPROVAL
+    FOLLOW_UP_READY --> RESOLVED
+    PAUSED --> INVESTIGATING
+    FAILED --> PARSING
+    RESOLVED --> [*]
 ```
 
-The critical property is **persistence**.
+`convex/core/states.ts` is the single source of truth. It is pure TypeScript with no Convex imports, which is why it is unit tested directly — including the property that **no state except `AWAITING_APPROVAL` can transition to `SENT`**.
 
-Sherlock should remember where the investigation is even when the user is not actively interacting with it.
+The frontend imports the same module, so a status the server enforces and a label you read can never drift apart.
 
 ---
 
-# 🌐 Firecrawl: Sherlock's Browser
+## Convex usage
 
-Sherlock's web layer exists for one reason:
-
-### **Find the information required to make an informed decision.**
-
-A high-level investigation might look like:
-
-```mermaid
-flowchart LR
-    A["Transaction email"] --> B["Merchant identified"]
-    B --> C["Relevant URL discovery"]
-    C --> D["Policy page"]
-    C --> E["Product page"]
-    C --> F["Terms / conditions"]
-    D --> G["Evidence set"]
-    E --> G
-    F --> G
-    G --> H["OpenAI reasoning"]
-```
-
-Rather than:
-
-```text
-scrape → summarize → stop
-```
-
-Sherlock is designed for:
-
-```text
-discover → crawl → extract → reason → act
-```
+| Capability | Where, and what it does |
+|---|---|
+| **Reactive queries** | `investigations.list/get/stats/activity`, `claims.listPending`, `emails.listInbox`. The dashboard's progress rail, counters and approval badge are subscriptions — the UI has no polling and no timers. |
+| **Mutations** | All state changes. `helpers.setStatus` is the only writer of `status`, and it validates against the state machine and writes the timeline entry in the same transaction. |
+| **Internal functions** | 30+ `internalQuery`/`internalMutation`/`internalAction`. The pipeline, the AgentMail send, and everything touching secrets are internal-only and unreachable from a browser. |
+| **Actions** | `sherlock/pipeline.investigate` orchestrates the whole case; each stage commits through a mutation before the next starts, so a retry resumes from persisted state. |
+| **Scheduler** | `ctx.scheduler.runAfter` hands the webhook off to the pipeline so the HTTP response is fast and the work is durable. |
+| **Crons** | Hourly monitor sweep (the alive layer), session purge, web-source pruning. Each is bounded per run. |
+| **HTTP actions** | The signed AgentMail inbound webhook and a health probe. |
+| **Components** | `@convex-dev/self-static-hosting` serves the frontend from the same deployment, app-owned routing so `/api/*` keeps its paths. |
+| **Indexes** | Every query is index-backed. No `.collect()`, no full scans, no `.filter()` where an index belongs. |
+| **Validators** | `args` and `returns` validators throughout; the status union is generated from the state machine so the schema cannot accept a state the machine does not know. |
 
 ---
 
-# 📧 AgentMail: The Agent's Inbox
-
-AgentMail is not merely used to notify the user.
-
-It forms the communication backbone of Sherlock.
+## Firecrawl: a browser, not one scrape
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant AM as AgentMail
-    participant C as Convex
-    participant O as OpenAI
+    participant P as Pipeline
     participant F as Firecrawl
-    participant M as Merchant
+    participant DB as webSources
+    participant AI as OpenAI
 
-    U->>AM: Forward transaction email
-    AM->>C: Inbound event
-    C->>O: Analyze email
-    O->>C: Structured transaction
-    C->>F: Investigate web sources
-    F->>C: Evidence
-    C->>O: Evaluate evidence
-    O->>C: Claim draft
-    C->>U: Approval required
-    U->>C: Approve
-    C->>AM: Send claim
-    AM->>M: Claim email
-    M->>AM: Reply
-    AM->>C: Reply event
-    C->>O: Analyze response
-    O->>C: Next action
+    P->>F: search "merchant refund policy site:merchant.com"
+    P->>F: search "merchant price adjustment site:merchant.com"
+    P->>F: search "merchant support email site:merchant.com"
+    F-->>P: candidate URLs (merchant domain only)
+
+    loop up to 4 pages
+        P->>DB: cached and fresh?
+        alt cached
+            DB-->>P: markdown
+        else
+            P->>F: scrape(url) as markdown
+            F-->>P: page content
+            P->>DB: store + content hash
+        end
+        P->>AI: extract clauses relevant to THIS transaction
+        AI-->>P: facts + verbatim excerpts
+        P->>DB: evidence rows with source URLs
+    end
+
+    Note over P,F: later — the alive layer
+    P->>F: scrape(watched url, maxAge=0)
+    P->>DB: compare content hash
+    alt unchanged
+        Note over P: no event, no model call
+    else changed
+        P->>DB: new snapshot + timeline event
+    end
 ```
 
-This makes the email conversation itself a persistent part of the investigation.
+Three targeted searches and at most four scrapes per case, scoped to the merchant's domain. Crawling a whole retailer to find one refund clause burns credits and finds nothing better.
+
+The **content hash is what makes daily monitoring affordable**: an unchanged page costs one scrape and zero model calls.
 
 ---
 
-# ⚡ Convex: Sherlock's Memory
+## OpenAI: structured, and allowed to say no
 
-Convex is the system responsible for keeping Sherlock alive across the entire workflow.
+Every call returns a typed object under a strict JSON schema. Nothing in this product forwards loose model text to a stranger.
 
-Conceptually:
+| Stage | Question | May answer |
+|---|---|---|
+| `extraction.run` | What transaction does this email describe? | `null` per field, or "not transactional" |
+| `research.run` | What on this page bears on this transaction? | an empty list |
+| `reasoning.assess` | Is this person actually entitled to something? | **no** |
+| `reasoning.draft` | Write the email | only runs if `assess` said yes |
+| `replies.analyze` | What did the merchant say? | "acknowledged", not "accepted" |
 
-```text
-┌─────────────────────────────────┐
-│             CONVEX              │
-├─────────────────────────────────┤
-│ Users                           │
-│ Investigations                  │
-│ Claims                          │
-│ Transactions                    │
-│ Policies                        │
-│ Evidence                        │
-│ Email threads                   │
-│ Messages                        │
-│ Price checks                    │
-│ Actions                         │
-│ Workflow state                  │
-│ Outcomes                        │
-└─────────────────────────────────┘
-```
-
-### Reactive UI
-
-When investigation state changes, the interface can reflect it.
-
-```text
-Investigating
-      ↓
-Policy found
-      ↓
-Evidence ready
-      ↓
-Approval required
-      ↓
-Claim sent
-      ↓
-Waiting
-      ↓
-Reply received
-      ↓
-Resolved
-```
-
-The goal is not simply to store records.
-
-### The database becomes the living state of the agent.
+Assessment and drafting are **deliberately separate calls**. Fusing them would let a drafting instinct manufacture an entitlement — the exact failure that makes this category of product untrustworthy. A case below the confidence floor stops without a draft.
 
 ---
 
-# ⏱️ Scheduled Intelligence
-
-A useful agent should not disappear after sending one email.
-
-For investigations that require continued monitoring, scheduled work can become:
-
-```text
-Case active
-    ↓
-Scheduled check
-    ↓
-Revisit relevant source
-    ↓
-Detect meaningful change
-    ↓
-Evaluate change
-    ↓
-Update case
-    ↓
-Take next permitted action
-```
-
-Example:
+## AgentMail: the inbox is the product
 
 ```mermaid
-flowchart TD
-    A["Active claim"] --> B["Scheduled check"]
-    B --> C["Revisit relevant page"]
-    C --> D["Detect change"]
-    D --> E["OpenAI evaluates impact"]
-    E --> F["Update Convex state"]
-    F --> G{"Action required?"}
-    G -->|No| H["Continue monitoring"]
-    G -->|Yes| I["Prepare next action"]
-    I --> J["User approval / permitted action"]
+sequenceDiagram
+    participant U as You
+    participant AM as AgentMail
+    participant S as Sherlock (Convex)
+    participant M as Merchant
+
+    U->>AM: forward receipt
+    AM->>S: POST /api/agentmail/inbound (signed)
+    S->>S: dedupe by message id → open investigation
+    Note over S: investigate, draft, then stop
+
+    S-->>U: claim awaiting approval
+    U->>S: approve
+    S->>AM: send from your inbox
+    AM->>M: claim email
+    S->>S: SENT → WAITING_FOR_REPLY (only after AgentMail confirms)
+
+    M->>AM: reply
+    AM->>S: POST /api/agentmail/inbound (signed)
+    S->>S: thread id → same case, not a new one
+    S->>S: classify reply → resolve, or draft a follow-up for approval
+
+    Note over S: no reply after 5 days
+    S->>S: cron drafts a nudge → FOLLOW_UP_READY
 ```
 
-This is the difference between a chatbot and a persistent agent.
+The inbox is not a notification channel. It is where the user's input arrives, where Sherlock's output goes, and where the conversation lives. Thread ids map merchant replies back onto the case that started them.
 
 ---
 
-# 📦 Core Domain Model
-
-A conceptual data model for Sherlock:
+## Data model
 
 ```mermaid
 erDiagram
-    USER ||--o{ INVESTIGATION : owns
-    INVESTIGATION ||--|| TRANSACTION : references
-    INVESTIGATION ||--o{ POLICY : evaluates
-    INVESTIGATION ||--o{ EVIDENCE : contains
-    INVESTIGATION ||--o{ CLAIM : produces
-    INVESTIGATION ||--o{ PRICE_CHECK : monitors
-    INVESTIGATION ||--o{ ACTION : records
-    INVESTIGATION ||--o{ THREAD : contains
-    THREAD ||--o{ MESSAGE : contains
-    CLAIM ||--o{ ACTION : triggers
-    POLICY ||--o{ EVIDENCE : supports
+    investigations ||--o{ evidence : "supported by"
+    investigations ||--o{ claims : "produces"
+    investigations ||--o{ events : "timeline"
+    investigations ||--o{ monitors : "watched by"
+    investigations ||--o{ emails : "conversation"
+    inboxes ||--o{ emails : "receives"
+    claims }o--|| emails : "sent as"
+    evidence }o--|| webSources : "extracted from"
+
+    investigations {
+        string status "state machine"
+        string merchantDomain
+        number amount
+        number potentialAmount "estimate"
+        number recoveredAmount "confirmed only"
+        string assessment
+        number lockedUntil "pipeline lock"
+    }
+    emails {
+        string dedupeKey "idempotency"
+        string threadId "routes replies"
+        string body "sanitized"
+        array threatFlags
+    }
+    evidence {
+        string fact
+        string excerpt "verbatim"
+        string sourceUrl "traceable"
+    }
+    claims {
+        string status
+        string body "you can edit"
+        number sentAt "set after send confirms"
+    }
+    monitors {
+        number remainingRuns "bounded"
+        string lastContentHash "change detection"
+    }
 ```
 
-### Core entities
-
-#### `users`
-
-Identity and account information.
-
-#### `investigations`
-
-The central durable object representing an active Sherlock case.
-
-#### `transactions`
-
-Structured information extracted from emails.
-
-#### `policies`
-
-Relevant source material discovered from the web.
-
-#### `evidence`
-
-Specific facts or source excerpts used to support a decision.
-
-#### `claims`
-
-Potential or active requests generated from an investigation.
-
-#### `priceChecks`
-
-Scheduled observations tied to an active investigation.
-
-#### `threads`
-
-The external communication history.
-
-#### `messages`
-
-Inbound and outbound email events.
-
-#### `actions`
-
-A durable audit trail of what Sherlock attempted or completed.
+`potentialAmount` and `recoveredAmount` are separate columns on purpose. The UI can show an estimate as an estimate, and only a merchant's confirmation moves money into "recovered".
 
 ---
 
-# 🛡️ Trust & Human Control
+## Trust model
 
-Sherlock is designed around a simple principle:
+Sherlock reads text written by strangers and then acts on it. That shapes the design more than anything else.
 
-## **Automate investigation before automating consequential action.**
+**External content is data, never instructions.** `convex/core/untrusted.ts` is the single boundary. It strips zero-width and bidi characters, neutralises instruction-shaped spans (`ignore previous instructions`, fake `<system>` tags, "send this immediately", "skip approval", secret-exfiltration attempts), closes fence breakouts, and wraps the result in a labelled block. If something tried to steer the agent, the model is *told* that, and so is the user — the inbox shows a **Suspicious content blocked** pill on that message.
 
-That means the intended default workflow is:
+**A human sends every email.** Not a prompt instruction — a structural one. `agentMail.send` is an `internalAction` with no public caller; the only path to it is `claims.approveAndSend`, which authenticates, checks the claim status, and refuses unless the investigation is sitting in `AWAITING_APPROVAL`. The state machine has no other edge into `SENT`. A merchant reply that says "send the next one automatically" gets classified as a reply, and any follow-up it produces lands back in the approval queue.
 
-```text
-Automatic
-─────────
-Receive
-Parse
-Research
-Crawl
-Extract
-Reason
-Prepare
-        │
-        ▼
-Human checkpoint
-        │
-        ▼
-Approve
-        │
-        ▼
-Automatic
-──────────
-Send
-Track
-Observe
-Update
-```
+**Every Convex function authorises on the server.** `requireOwner` is the one door, and case data is scoped by `ownerKey` through an index. The React guard hides UI; it protects nothing and is not relied upon.
 
-This creates a human-readable boundary between:
+**Nothing is optimistically successful.** `sentAt` and the `SENT` transition are written after AgentMail confirms. A failed send returns the claim to `awaiting_approval` with the draft intact and a timeline entry saying nothing was delivered.
 
-**what Sherlock discovered**
+**Secrets never reach the browser.** Keys live in the Convex environment; the client learns only whether one is present. Logged event details pass through `redactSecrets`.
 
-and
-
-**what Sherlock is allowed to do.**
+**Bounded by construction.** 25 outbound emails per day, at most 4 scrapes per case, at most 10 monitors per sweep, `remainingRuns` on every monitor, a cooperative lock so a retried pipeline cannot double-run a case.
 
 ---
 
-# Evidence-First UX
+## Project structure
 
-A claim should not feel like a black-box AI decision.
-
-Sherlock can present:
-
-```text
-Potential recovery
-$20.00
-
-Why Sherlock thinks this:
-
-✓ Transaction identified
-✓ Product matched
-✓ Current price found
-✓ Relevant policy discovered
-✓ Policy appears applicable
-
-Evidence
-────────────────────────
-Original purchase
-Current price
-Policy source
-Relevant clause
-────────────────────────
-
-Draft
-────────────────────────
-[message preview]
-────────────────────────
-
-[Approve & Send]
 ```
+convex/
+  core/                  pure, dependency-free, unit tested
+    states.ts            the investigation state machine
+    untrusted.ts         prompt-injection boundary
+    email.ts             forwarding, domains, idempotency keys
+  sherlock/
+    pipeline.ts          durable orchestration
+    extraction.ts        email → transaction (OpenAI)
+    research.ts          merchant → evidence (Firecrawl + OpenAI)
+    reasoning.ts         evidence → assessment → draft (OpenAI)
+    replies.ts           merchant reply → outcome
+    monitor.ts           the alive layer
+    firecrawl.ts         search + scrape
+    llm.ts               structured OpenAI calls
+  schema.ts              tables, indexes, validators
+  auth.ts                requireOwner — the authorization gate
+  investigations.ts      queries, mutations, lifecycle
+  claims.ts              the approval boundary
+  emails.ts              idempotent ingestion
+  agentMail.ts           AgentMail REST client
+  chat.ts                Ask Sherlock, grounded in case data
+  http.ts                signed webhook, health, static routes
+  crons.ts               scheduled work
 
-The user should be able to understand the basis for the action before approving it.
+src/
+  pages/                 Landing, Inbox, Investigations, CaseDetail,
+                         Claims, Activity, Chat, Settings, SignIn
+  components/            Shell, pieces, Logo
+  lib/                   session, status, utils
 
----
-
-# 📊 Investigation Dashboard
-
-The dashboard should make the agent's work visible without turning the product into an analytics platform.
-
-A case can show:
-
-```text
-Sherlock
-
-$127.40
-Potential / Recovered
-
-──────────────────────────────
-
-ACTIVE INVESTIGATIONS
-
-Amazon                  $20
-Claim Sent              ●
-
-Example Airline         ₹4,800
-Awaiting Reply          ●
-
-Example Store            $14
-Resolved                 ✓
-
-──────────────────────────────
-
-6 day activity streak
-
-12 investigations
-8 resolved
-4 active
-```
-
-The visual hierarchy should prioritize:
-
-1. What needs attention
-2. What Sherlock is doing
-3. What has been recovered
-4. What is still active
-
----
-
-# 💬 Conversational Interface
-
-The conversational surface exists to make asking Sherlock about active investigations effortless.
-
-Example:
-
-```text
-You:
-Sherlock, what happened with my airline cancellation?
-
-Sherlock:
-I found the cancellation thread.
-
-Current status:
-Waiting for airline response
-
-Potential claim:
-₹4,800
-
-Last action:
-Claim sent yesterday.
-
-The airline has not replied yet.
-```
-
-Another example:
-
-```text
-You:
-Why do you think I'm eligible?
-
-Sherlock:
-I found three relevant pieces of evidence:
-
-1. Your original transaction
-2. The merchant's price-adjustment policy
-3. A lower current product price
-
-The policy appears to permit an adjustment under
-the conditions attached to your purchase.
-
-[View Evidence]
-```
-
-The chat is therefore a control surface for a persistent system—not the product's only form of intelligence.
-
----
-
-# 🔁 The Complete Sherlock Experience
-
-```mermaid
-journey
-    title A Sherlock Investigation
-    section User
-      Receive transaction email: 5
-      Forward to Sherlock: 5
-      Review evidence: 4
-      Approve action: 5
-      Receive outcome: 5
-    section Sherlock
-      Parse email: 5
-      Identify transaction: 5
-      Discover relevant sources: 5
-      Crawl web: 5
-      Analyze evidence: 5
-      Draft claim: 5
-      Send thread: 5
-      Monitor case: 5
-      Process reply: 5
+tests/                   unit tests for convex/core (no credentials needed)
 ```
 
 ---
 
-# 🧩 Why This Is a Product, Not an AI Wrapper
+## Running it
 
-A typical AI wrapper:
-
-```text
-Input
-  ↓
-LLM
-  ↓
-Text
-  ↓
-Done
+```bash
+npm install
+npx convex dev          # one-time: authenticates and creates the deployment
 ```
 
-Sherlock:
+That second command also writes `convex/_generated/`, which the project needs to typecheck and build. Then, in another terminal:
 
-```text
-Input
-  ↓
-Context
-  ↓
-Investigation
-  ↓
-External evidence
-  ↓
-Reasoning
-  ↓
-Decision
-  ↓
-Human approval
-  ↓
-Communication
-  ↓
-Persistent monitoring
-  ↓
-Outcome
+```bash
+npm run dev             # frontend at http://localhost:5173
 ```
 
-That difference is the product.
+Set the keys on the deployment:
 
----
-
-# 🔥 The Product Thesis
-
-Sherlock is based on a simple thesis:
-
-> **The next generation of personal AI will not just answer questions. It will own workflows.**
-
-Email already contains:
-
-* receipts
-* booking information
-* invoices
-* confirmations
-* cancellations
-* policies
-* conversations
-* deadlines
-* opportunities
-
-The web contains:
-
-* policies
-* prices
-* documentation
-* public information
-* terms
-* product information
-
-An agent that can connect these two worlds can turn passive information into active outcomes.
-
-```text
-EMAIL
-  +
-WEB
-  +
-REASONING
-  +
-MEMORY
-  +
-COMMUNICATION
-  =
-PERSONAL ACTION AGENT
+```bash
+npx convex env set OPENAI_API_KEY sk-...
+npx convex env set FIRECRAWL_API_KEY fc-...
+npx convex env set AGENTMAIL_API_KEY ...
+npx convex env set AGENTMAIL_WEBHOOK_SECRET "$(openssl rand -hex 32)"
 ```
 
-Sherlock is an implementation of that thesis.
+Then open **Settings** in the app to create your inbox, generate a passcode hash, and point AgentMail's inbound webhook at:
 
----
+```
+https://<your-deployment>.convex.site/api/agentmail/inbound
+```
 
-# 🏆 Why Sherlock Fits the Convex All Gas Hackathon
+Sherlock runs without keys — it just fails honestly. A missing `OPENAI_API_KEY` produces a case that says so, rather than a fabricated result.
 
-The hackathon explicitly prioritizes:
+### Checks
 
-* everyday applications
-* creativity and usefulness
-* meaningful Convex usage
-* meaningful sponsor-stack usage
-* a public live product
-* social proof
-* a concise real-product demo
+```bash
+npm test                # unit tests (no credentials needed)
+npm run typecheck       # frontend + backend (needs convex/_generated)
+npm run lint
+npm run build
+```
 
-Sherlock is designed around those requirements rather than bolting the sponsor technologies onto an unrelated project.
+### Deploy
 
-### Convex
-
-Persistent investigations, reactive application state, queries, mutations, scheduled workflows, and durable history.
-
-### OpenAI
-
-Understanding messages, extracting structured facts, interpreting evidence, reasoning about potential eligibility, and drafting communication.
-
-### Firecrawl
-
-Web research, policy discovery, source retrieval, and continued investigation of relevant public information.
-
-### AgentMail
-
-The agent's email identity, inbound messages, outbound communication, threads, replies, and follow-through.
-
-The result is one closed loop:
-
-```text
-      ┌─────────────┐
-      │  AgentMail  │
-      │    INBOX    │
-      └──────┬──────┘
-             │
-             ▼
-      ┌─────────────┐
-      │   CONVEX    │
-      │    MEMORY   │
-      └───┬─────┬───┘
-          │     │
-          ▼     ▼
-   ┌─────────┐ ┌──────────┐
-   │ OpenAI  │ │Firecrawl │
-   │  BRAIN  │ │ BROWSER  │
-   └────┬────┘ └────┬─────┘
-        │           │
-        └─────┬─────┘
-              ▼
-        ACTION + OUTCOME
+```bash
+npx convex deploy       # backend
+npm run deploy          # builds and uploads the frontend to convex.site
 ```
 
 ---
 
-# 🧪 Example Use Cases
+## Limitations
 
-The initial product can focus on purchase-related claims, while the underlying agent model is intentionally extensible.
+Stated plainly, because a product that reads policies and writes to companies should be honest about its own edges.
 
-### Price adjustments
+- **One owner per deployment.** The schema carries `ownerKey` throughout and every query is scoped by it, but sign-in is a single passcode. Multi-user is a data change, not a rewrite — it is not done.
+- **Purchase and booking email is the wedge.** Other categories will extract and research, but the policy queries are tuned for retail and travel.
+- **Research is four pages deep.** A clause buried on the fifth page will be missed. This is a cost decision, not a technical limit.
+- **No outcome is guaranteed.** Sherlock finds the clause and writes the letter. Whether a company honours it is up to the company.
+- **`recoveredAmount` is only as good as the reply.** It is set when a merchant's reply confirms a figure, or when you enter it by hand on the case. Sherlock has no access to your bank or card.
+- **AgentMail payload shapes vary.** The webhook reads several field spellings defensively; a genuinely new shape needs a small change in `http.ts`.
+- **Reply classification is a model call.** If it fails, the case stays in `REPLY_RECEIVED` and you read the reply yourself — it does not guess.
 
-```text
-Receipt
-  ↓
-Current price discovered
-  ↓
-Policy checked
-  ↓
-Potential savings identified
-  ↓
-Claim prepared
-```
+## Roadmap
 
-### Refund / return research
-
-```text
-Purchase email
-  ↓
-Return policy discovered
-  ↓
-Eligibility evaluated
-  ↓
-Action prepared
-```
-
-### Travel disruption
-
-```text
-Cancellation / delay email
-  ↓
-Booking details
-  ↓
-Relevant policy / terms
-  ↓
-Potential compensation
-  ↓
-Claim workflow
-```
-
-### Subscription changes
-
-```text
-Subscription email
-  ↓
-Terms researched
-  ↓
-Change identified
-  ↓
-Relevant action prepared
-```
-
-These are expansion paths—not reasons to overload the initial MVP.
+- Multi-user auth, so one deployment serves more than its owner
+- A merchant policy cache shared across investigations
+- Categories beyond retail: utilities, insurance, tenancy
+- Outcome tracking that distinguishes "they paid" from "they said they would"
 
 ---
 
-# 🎯 MVP Scope
+## License
 
-The strongest first version of Sherlock deliberately focuses on a narrow workflow.
+MIT licensed. See [LICENSE](./LICENSE).
 
-## Primary workflow
-
-> **Forward a purchase email → investigate potential price/refund opportunity → prepare evidence → ask for approval → send the claim → monitor the thread.**
-
-### MVP components
-
-```text
-✓ Email ingestion
-✓ Transaction extraction
-✓ Merchant identification
-✓ Relevant policy discovery
-✓ Web crawling
-✓ Evidence extraction
-✓ Claim reasoning
-✓ Claim drafting
-✓ Human approval
-✓ Threaded email sending
-✓ Persistent investigation state
-✓ Realtime case status
-✓ Scheduled monitoring
-```
-
-### Deliberately deferred
-
-```text
-- Massive retailer-policy corpus
-- Full consumer-finance automation
-- Universal email understanding
-- Autonomous negotiation without approval
-- Shopify integrations
-- Complex rewards systems
-- Large-scale recommendation engines
-```
-
-The goal is not maximum feature count.
-
-### The goal is one workflow that feels complete.
-
----
-
-# 🪜 Roadmap
-
-## Phase 1 — The Investigator
-
-```text
-Forward
-  ↓
-Parse
-  ↓
-Research
-  ↓
-Explain
-```
-
-## Phase 2 — The Actor
-
-```text
-Research
-  ↓
-Draft
-  ↓
-Approve
-  ↓
-Send
-```
-
-## Phase 3 — The Persistent Agent
-
-```text
-Send
-  ↓
-Monitor
-  ↓
-Receive reply
-  ↓
-Reason
-  ↓
-Follow up
-  ↓
-Resolve
-```
-
-## Phase 4 — The Personal Claims Engine
-
-```text
-Purchases
-Travel
-Subscriptions
-Services
-Other eligible workflows
-```
-
-The architecture expands from the same investigation engine rather than requiring a new product for every category.
-
----
-
-# 📈 Retention Model
-
-Sherlock should have reasons to return without turning the product into a gimmick.
-
-Useful recurring signals can include:
-
-```text
-Money recovered
-Active investigations
-Pending claims
-New replies
-New opportunities
-Resolved cases
-```
-
-A lightweight progression layer can make that state easier to understand:
-
-```text
-Recovered        $127.40
-Active cases          4
-Resolved              8
-Current streak        6d
-```
-
-The product's primary retention mechanism remains **useful outcomes**, not gamification.
-
----
-
-# 🛠️ Technical Philosophy
-
-Sherlock follows a few engineering rules.
-
-### Server-owned state
-
-The client should never become the source of truth for investigation state.
-
-### Durable workflows
-
-Long-running investigations should survive page refreshes, user absence, and intermediate failures.
-
-### Idempotent processing
-
-Inbound email events and scheduled work should be safe to retry.
-
-### Explicit state transitions
-
-Investigations should move through known states instead of relying on loosely structured flags.
-
-### Evidence traceability
-
-Important decisions should retain the sources and facts that led to them.
-
-### Human authorization
-
-High-impact external actions should have an explicit permission boundary.
-
----
-
-# 🔐 Reliability & Safety Model
-
-Sherlock deals with real messages and potentially consequential actions.
-
-The system therefore benefits from:
-
-```text
-Input validation
-      ↓
-Structured extraction
-      ↓
-Evidence collection
-      ↓
-Reasoning
-      ↓
-Confidence / applicability check
-      ↓
-Human approval
-      ↓
-External action
-```
-
-Important failures should not silently become actions.
-
-For example:
-
-```text
-No reliable transaction
-        ↓
-Do not claim
-
-No relevant policy
-        ↓
-Explain uncertainty
-
-Conflicting evidence
-        ↓
-Request review
-
-Low-confidence interpretation
-        ↓
-Do not send automatically
-```
-
----
-
-# 📚 Observability
-
-A persistent agent needs an internal history.
-
-Each investigation should be explainable as:
-
-```text
-09:41  Email received
-09:41  Transaction extracted
-09:42  Merchant identified
-09:42  Policy discovered
-09:43  Product page crawled
-09:43  Evidence collected
-09:44  Claim prepared
-09:45  User approved
-09:45  Email sent
-09:45  Status → WAITING_FOR_REPLY
-```
-
-This creates an audit-friendly event trail and makes debugging agent behavior substantially easier.
-
----
-
-# 🧱 Conceptual Repository Structure
-
-```text
-sherlock/
-│
-├── convex/
-│   ├── schema.ts
-│   ├── investigations/
-│   ├── claims/
-│   ├── emails/
-│   ├── workflows/
-│   ├── scheduled/
-│   ├── ai/
-│   └── http.ts
-│
-├── components/
-│   ├── inbox/
-│   ├── investigations/
-│   ├── evidence/
-│   ├── claims/
-│   └── chat/
-│
-├── lib/
-│   ├── email/
-│   ├── extraction/
-│   ├── evidence/
-│   └── formatting/
-│
-├── public/
-│
-├── README.md
-├── hackathon.md
-└── package.json
-```
-
-The exact repository structure may evolve as implementation changes.
-
----
-
-# 🧭 Architecture at a Glance
-
-```mermaid
-flowchart TB
-    U["User"]
-
-    subgraph FRONTEND["Sherlock UI"]
-        I["Inbox"]
-        C["Claims"]
-        E["Evidence"]
-        CH["Chat"]
-    end
-
-    subgraph CONVEX["Convex"]
-        DB["Database"]
-        Q["Reactive Queries"]
-        M["Mutations"]
-        W["Workflows"]
-        CR["Scheduled Jobs"]
-        ST["Storage"]
-    end
-
-    subgraph AGENT["Agent Layer"]
-        O["OpenAI"]
-        F["Firecrawl"]
-    end
-
-    AM["AgentMail"]
-
-    U --> I
-    U --> C
-    U --> CH
-
-    I --> DB
-    C --> Q
-    E --> Q
-    CH --> Q
-
-    AM --> DB
-    DB --> Q
-    M --> DB
-    W --> M
-    CR --> W
-    ST --> DB
-
-    DB --> O
-    O --> M
-    W --> F
-    F --> M
-    M --> AM
-```
-
----
-
-# ⚙️ Deployment Model
-
-Sherlock is designed for deployment using the hackathon's supported hosting model, with the frontend served from Convex-hosted infrastructure where required.
-
-The project also maintains a public repository so that:
-
-* judges can inspect the implementation,
-* the build history can be understood,
-* the architecture can be reviewed,
-* and the `hackathon.md` build log can document development.
-
----
-
-# 🏁 Demo Story
-
-Sherlock should be demonstrated through the product itself.
-
-### The ideal demo:
-
-```text
-00:00
-A real transaction email arrives.
-
-00:15
-Forward it to Sherlock.
-
-00:30
-Sherlock identifies the transaction.
-
-00:45
-Firecrawl finds the relevant policy.
-
-01:05
-OpenAI explains the opportunity.
-
-01:20
-Sherlock assembles the evidence.
-
-01:35
-User approves the claim.
-
-01:45
-AgentMail sends the real message.
-
-02:00
-Convex updates the live case state.
-
-02:15
-A reply arrives.
-
-02:30
-Sherlock processes it.
-
-02:45
-The investigation reaches an outcome.
-```
-
-### The demo should show the workflow.
-
-Not a slideshow about the workflow.
-
----
-
-# 🧠 The Deeper Idea
-
-Sherlock starts with refunds and claims, but the underlying idea is larger.
-
-Today:
-
-> **“What am I entitled to from this email?”**
-
-Tomorrow:
-
-> **“What should happen next?”**
-
-Eventually:
-
-> **“Handle this for me.”**
-
-That transition—from **information retrieval** to **persistent action**—is the central product thesis.
-
----
-
-# Sherlock in One Diagram
-
-```mermaid
-flowchart LR
-    A["Your Inbox"] --> B["Sherlock"]
-    B --> C["Understand"]
-    C --> D["Browse"]
-    D --> E["Reason"]
-    E --> F["Gather Evidence"]
-    F --> G["Propose Action"]
-    G --> H["Human Approval"]
-    H --> I["Act"]
-    I --> J["Monitor"]
-    J --> K["Outcome"]
-    K --> B
-```
-
----
-
-# The One-Liner
-
-> **Sherlock is a personal email agent with a browser: forward an email, and it investigates the web, finds what you're owed, builds the evidence, and helps you act.**
-
----
-
-# The Architecture One-Liner
-
-> **AgentMail gives Sherlock an inbox, Firecrawl gives it a browser, OpenAI gives it reasoning, and Convex gives it persistent realtime memory.**
-
----
-
-# The Product One-Liner
-
-> **Your inbox contains the problem. Sherlock finds the answer and follows it through to action.**
-
----
-
-# Status
-
-### 🚧 Hackathon Build
-
-Sherlock is being developed as a new full-stack application for the **Convex All Gas Hackathon**, with the architecture intentionally centered around Convex, OpenAI, Firecrawl, and AgentMail.
-
-The implementation described above represents the product architecture and intended workflow; live feature availability depends on the current state of the codebase and deployment.
-
----
-
-# Credits
-
-Built for the **Convex All Gas Hackathon**, sponsored by:
-
-* [Convex](https://convex.dev/)
-* [OpenAI](https://openai.com/)
-* [Firecrawl](https://firecrawl.dev/)
-* [AgentMail](https://agentmail.to/)
-
----
-
-# Final Thought
-
-> **The future of email isn't a better inbox.**
->
-> **It's an inbox that can do the work.**
-
-**Sherlock**
-*Give Your Inbox a Browser.* 🕵️
+The build log is in [hackathon.md](./hackathon.md).
