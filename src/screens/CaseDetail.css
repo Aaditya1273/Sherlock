@@ -158,7 +158,7 @@
   padding: var(--space-4);
 }
 .thread-inbound {
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--brand);
 }
 .thread-outbound {
   border-left: 3px solid var(--border-strong);

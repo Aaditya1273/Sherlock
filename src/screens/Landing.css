@@ -1,9 +1,9 @@
 /**
  * Landing page — light only.
  *
- * The marketing surface runs in light regardless of OS preference, so it
- * reads identically for every visitor and every screenshot. The application
- * screens keep their own light/dark tokens.
+ * The whole product is light-only; the app screens share these values
+ * through src/styles/tokens.css, so a reader who clicks through from here
+ * lands in the same system.
  *
  * Signature ingredients: white and neutral-50 grounds, hairline borders at
  * 10% ink, a solid-ink primary button that grows a soft ring on hover, mono

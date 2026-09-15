@@ -32,7 +32,7 @@ svg {
 }
 
 a {
-  color: var(--accent-text);
+  color: var(--brand);
   text-decoration: none;
 }
 a:hover {
@@ -93,18 +93,19 @@ button:disabled {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 0.5rem 0.875rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
+  height: 36px;
+  padding: 0 0.875rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  background: var(--accent-soft);
   color: var(--text);
   font-size: var(--text-sm);
   font-weight: 500;
   white-space: nowrap;
-  transition: background 0.12s ease, border-color 0.12s ease, transform 0.06s ease;
+  transition: background 0.12s ease, box-shadow 0.25s var(--ease), transform 0.08s ease;
 }
 .btn:hover:not(:disabled) {
-  background: var(--surface-hover);
+  background: rgba(23, 23, 23, 0.1);
 }
 .btn:active:not(:disabled) {
   transform: translateY(0.5px);
@@ -113,16 +114,17 @@ button:disabled {
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  /* --accent-on flips with the theme, so the label stays legible on both. */
   color: var(--accent-on);
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
+  box-shadow: 0 0 0 4px var(--ring);
 }
 .btn-danger {
   color: var(--negative);
-  border-color: var(--border-strong);
+  background: transparent;
+  border-color: var(--border);
 }
 .btn-danger:hover:not(:disabled) {
   background: var(--negative-soft);
@@ -137,11 +139,13 @@ button:disabled {
   color: var(--text);
 }
 .btn-lg {
-  padding: 0.7rem 1.25rem;
+  height: 40px;
+  padding: 0 1.25rem;
   font-size: var(--text-md);
 }
 .btn-sm {
-  padding: 0.3rem 0.6rem;
+  height: 30px;
+  padding: 0 0.6rem;
   font-size: var(--text-xs);
 }
 
@@ -151,10 +155,18 @@ select {
   font: inherit;
   width: 100%;
   padding: 0.5rem 0.7rem;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--text);
+  transition: border-color 0.12s ease, box-shadow 0.2s var(--ease);
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 4px var(--ring);
 }
 input::placeholder,
 textarea::placeholder {
@@ -179,7 +191,7 @@ label {
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 14px;
   box-shadow: var(--shadow-sm);
 }
 

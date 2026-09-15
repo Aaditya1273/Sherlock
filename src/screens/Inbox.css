@@ -81,8 +81,8 @@
   flex-shrink: 0;
 }
 .mail-dir-inbound {
-  background: var(--accent-soft);
-  color: var(--accent-text);
+  background: var(--brand-soft);
+  color: var(--brand);
 }
 .mail-dir-outbound {
   background: var(--neutral-soft);

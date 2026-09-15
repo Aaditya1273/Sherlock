@@ -32,7 +32,7 @@
 }
 .rail-step.is-done::before,
 .rail-step.is-current::before {
-  background: var(--accent);
+  background: var(--brand);
 }
 .rail-dot {
   width: 11px;
@@ -44,13 +44,13 @@
   z-index: 1;
 }
 .rail-step.is-done .rail-dot {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--brand);
+  border-color: var(--brand);
 }
 .rail-step.is-current .rail-dot {
-  border-color: var(--accent);
+  border-color: var(--brand);
   background: var(--bg);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--brand-soft);
 }
 .rail-label {
   font-size: 11px;

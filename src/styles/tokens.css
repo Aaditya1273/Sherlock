@@ -1,10 +1,10 @@
 /**
- * Sherlock design tokens.
+ * Sherlock design tokens — one system for the landing page and the app.
  *
- * One accent, one attention colour, a warm neutral ground. The product shows
- * money and sends mail on someone's behalf, so the visual language is calm
- * and documentary rather than energetic — colour is reserved for state, not
- * decoration.
+ * White ground, ink at low alpha for every line, solid ink for the primary
+ * action, a deep blue reserved for "working" state and eyebrows, and three
+ * state colours. Light only: the product shows money and sends mail on
+ * someone's behalf, and one appearance everywhere is part of being legible.
  *
  * Never hardcode a colour in a component; add a token here.
  */
@@ -13,50 +13,64 @@
   color-scheme: light;
 
   /* Ground */
-  --bg: #fbfaf8;
-  --bg-sunken: #f3f1ed;
+  --bg: #ffffff;
+  --bg-sunken: #fafafa;
   --surface: #ffffff;
-  --surface-hover: #f6f4f1;
+  --surface-hover: #f5f5f5;
   --surface-raised: #ffffff;
+  --panel: #f6f6f6;
 
   /* Ink */
-  --text: #17161a;
-  --text-muted: #6b6862;
-  --text-faint: #97938c;
-  --text-inverse: #fbfaf8;
+  --text: #171717;
+  --text-muted: #737373;
+  --text-faint: #a3a3a3;
+  --text-inverse: #ffffff;
 
-  /* Lines */
-  --border: #e4e0da;
-  --border-strong: #d3cec6;
+  /* Lines — ink at low alpha, so they sit the same on every ground */
+  --border: rgba(23, 23, 23, 0.1);
+  --border-soft: rgba(23, 23, 23, 0.06);
+  --border-strong: rgba(23, 23, 23, 0.18);
 
-  /* Accent — used for the primary action and the brand mark only. */
-  --accent: #1c3f5e;
-  --accent-hover: #15324b;
-  --accent-soft: #e8eef4;
-  --accent-text: #1c3f5e;
+  /* Primary action — solid ink, like the landing page */
+  --accent: #171717;
+  --accent-hover: #000000;
+  --accent-soft: rgba(23, 23, 23, 0.05);
+  --accent-text: #171717;
   --accent-on: #ffffff;
+  --ring: #e5e5e5;
 
-  /* Attention — the approval queue, and nothing else. */
-  --attention: #b45309;
-  --attention-soft: #fdf3e3;
+  /* Brand blue — eyebrows, "working" state, links */
+  --brand: #1c3f5e;
+  --brand-soft: #e8eef4;
+
+  /* Attention — the approval queue, and nothing else */
+  --attention: #ea580c;
+  --attention-soft: #fff3e8;
 
   /* State */
-  --positive: #15803d;
-  --positive-soft: #e7f5ec;
+  --positive: #16a34a;
+  --positive-soft: #e8f7ee;
   --negative: #b42318;
   --negative-soft: #fdeceb;
-  --neutral: #52525b;
-  --neutral-soft: #f0efec;
+  --neutral: #737373;
+  --neutral-soft: #f5f5f5;
   --working: #1c3f5e;
   --working-soft: #e8eef4;
 
-  /* Elevation */
-  --shadow-sm: 0 1px 2px rgba(23, 22, 26, 0.05);
-  --shadow-md: 0 2px 8px rgba(23, 22, 26, 0.07), 0 1px 2px rgba(23, 22, 26, 0.04);
-  --shadow-lg: 0 12px 32px rgba(23, 22, 26, 0.10), 0 2px 6px rgba(23, 22, 26, 0.05);
+  /* Badge tones (shared with the landing page) */
+  --tone-orange: #f97316;
+  --tone-green: #22c55e;
+  --tone-purple: #a855f7;
 
-  /* Type */
-  /* Bound to next/font variables set on <html> in app/layout.tsx. */
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(23, 23, 23, 0.04);
+  --shadow-md: 0 2px 8px rgba(23, 23, 23, 0.06), 0 1px 2px rgba(23, 23, 23, 0.04);
+  --shadow-lg: 0 12px 36px rgba(23, 23, 23, 0.08), 0 2px 6px rgba(23, 23, 23, 0.04);
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Type — bound to next/font variables set on <html> in app/layout.tsx */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
@@ -85,95 +99,13 @@
   --space-16: 4rem;
   --space-24: 6rem;
 
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 7px;
-  --radius-lg: 11px;
+  /* Radius — matches the landing cards and buttons */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 999px;
 
   --sidebar-width: 236px;
   --content-max: 1080px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-
-    --bg: #131315;
-    --bg-sunken: #0e0e10;
-    --surface: #1a1a1d;
-    --surface-hover: #212125;
-    --surface-raised: #1f1f23;
-
-    --text: #f0eeea;
-    --text-muted: #a3a09a;
-    --text-faint: #6f6c67;
-    --text-inverse: #131315;
-
-    --border: #2a2a2e;
-    --border-strong: #3a3a40;
-
-    --accent: #7fb0dc;
-    --accent-hover: #9cc4e8;
-    --accent-soft: #1a2734;
-    --accent-text: #9cc4e8;
-    --accent-on: #0e1a24;
-
-    --attention: #e0a355;
-    --attention-soft: #2b2113;
-
-    --positive: #5ec07f;
-    --positive-soft: #14251a;
-    --negative: #ef7b70;
-    --negative-soft: #2a1715;
-    --neutral: #a1a1aa;
-    --neutral-soft: #232327;
-    --working: #7fb0dc;
-    --working-soft: #1a2734;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
-  }
-}
-
-[data-theme='dark'] {
-  color-scheme: dark;
-
-  --bg: #131315;
-  --bg-sunken: #0e0e10;
-  --surface: #1a1a1d;
-  --surface-hover: #212125;
-  --surface-raised: #1f1f23;
-
-  --text: #f0eeea;
-  --text-muted: #a3a09a;
-  --text-faint: #6f6c67;
-  --text-inverse: #131315;
-
-  --border: #2a2a2e;
-  --border-strong: #3a3a40;
-
-  --accent: #7fb0dc;
-  --accent-hover: #9cc4e8;
-  --accent-soft: #1a2734;
-  --accent-text: #9cc4e8;
-  --accent-on: #0e1a24;
-
-  --attention: #e0a355;
-  --attention-soft: #2b2113;
-
-  --positive: #5ec07f;
-  --positive-soft: #14251a;
-  --negative: #ef7b70;
-  --negative-soft: #2a1715;
-  --neutral: #a1a1aa;
-  --neutral-soft: #232327;
-  --working: #7fb0dc;
-  --working-soft: #1a2734;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
 }

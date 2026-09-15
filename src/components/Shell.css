@@ -9,7 +9,7 @@
   flex-direction: column;
   gap: var(--space-6);
   padding: var(--space-5) var(--space-4);
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--border-soft);
   background: var(--bg-sunken);
   position: sticky;
   top: 0;
@@ -57,6 +57,7 @@
   background: var(--surface);
   color: var(--text);
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
 }
 
 .shell-badge {
