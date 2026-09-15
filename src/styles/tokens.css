@@ -56,9 +56,10 @@
   --shadow-lg: 0 12px 32px rgba(23, 22, 26, 0.10), 0 2px 6px rgba(23, 22, 26, 0.05);
 
   /* Type */
-  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+  /* Bound to next/font variables set on <html> in app/layout.tsx. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
   --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', serif;
 
   --text-xs: 0.75rem;

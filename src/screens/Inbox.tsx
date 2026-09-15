@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuthArgs } from '../lib/session';
@@ -74,7 +76,7 @@ export function Inbox() {
               {attention.length} {attention.length === 1 ? 'claim needs' : 'claims need'} your
               approval before anything is sent.
             </span>
-            <Link to="/app/claims" className="attention-link">
+            <Link href="/app/claims" className="attention-link">
               Review
             </Link>
           </div>
@@ -110,7 +112,7 @@ export function Inbox() {
                 : 'Create your Sherlock inbox in Settings, then forward a purchase or booking email to it.'
             }
             action={
-              <Link to="/app/settings" className="btn btn-primary">
+              <Link href="/app/settings" className="btn btn-primary">
                 {inbox ? 'View inbox settings' : 'Set up your inbox'}
               </Link>
             }
@@ -145,7 +147,7 @@ export function Inbox() {
             return email.investigationId ? (
               <Link
                 key={email._id}
-                to={`/app/investigations/${email.investigationId}`}
+                href={`/app/case?id=${email.investigationId}`}
                 className="card mail-row"
               >
                 <div className="mail-row-main">{body}</div>

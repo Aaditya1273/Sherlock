@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuthArgs } from '../lib/session';
@@ -42,7 +44,7 @@ export function Activity() {
               <p className="timeline-summary">{event.summary}</p>
               {event.investigationId && event.investigationTitle && (
                 <Link
-                  to={`/app/investigations/${event.investigationId}`}
+                  href={`/app/case?id=${event.investigationId}`}
                   style={{ fontSize: 'var(--text-xs)' }}
                 >
                   {event.investigationTitle}

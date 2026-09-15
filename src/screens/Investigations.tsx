@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuthArgs } from '../lib/session';
@@ -52,7 +54,7 @@ export function Investigations() {
               : 'Try a different filter, or forward a new email to open a case.'
           }
           action={
-            <Link to="/app" className="btn btn-primary">
+            <Link href="/app" className="btn btn-primary">
               Go to inbox
             </Link>
           }

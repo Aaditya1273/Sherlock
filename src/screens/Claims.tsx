@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuthArgs } from '../lib/session';
@@ -59,7 +61,7 @@ export function Claims() {
           title="No claims yet"
           body="When Sherlock finds a policy that entitles you to something, it drafts the email here and waits for you."
           action={
-            <Link to="/app" className="btn btn-primary">
+            <Link href="/app" className="btn btn-primary">
               Go to inbox
             </Link>
           }
@@ -73,7 +75,7 @@ export function Claims() {
             {pending.map(({ claim, investigation }) => (
               <Link
                 key={claim._id}
-                to={`/app/investigations/${investigation._id}`}
+                href={`/app/case?id=${investigation._id}`}
                 className="card claim-row is-pending"
               >
                 <div className="claim-main">
@@ -103,7 +105,7 @@ export function Claims() {
             {rest.map(({ claim, investigation }) => (
               <Link
                 key={claim._id}
-                to={`/app/investigations/${investigation._id}`}
+                href={`/app/case?id=${investigation._id}`}
                 className="card claim-row"
               >
                 <div className="claim-main">

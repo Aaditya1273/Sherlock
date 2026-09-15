@@ -1,4 +1,7 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from 'convex/react';
 import type { ReactNode } from 'react';
 import { api } from '../../convex/_generated/api';
@@ -26,7 +29,8 @@ const NAV = [
 export function Shell({ children }: { children: ReactNode }) {
   const auth = useAuthArgs();
   const { openMode, setToken, token } = useSession();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
   const signOut = useMutation(api.auth.signOut);
 
   const pending = useQuery(api.claims.listPending, auth);
@@ -35,24 +39,25 @@ export function Shell({ children }: { children: ReactNode }) {
   async function handleSignOut() {
     if (token) await signOut({ token });
     setToken(undefined);
-    navigate('/');
+    router.push('/');
   }
 
   return (
     <div className="shell">
       <aside className="shell-nav">
-        <NavLink to="/" className="shell-brand">
+        <Link href="/" className="shell-brand">
           <Logo size={22} />
           <span>Sherlock</span>
-        </NavLink>
+        </Link>
 
         <nav>
-          {NAV.map((item) => (
-            <NavLink
+          {NAV.map((item) => {
+            const isActive = item.end ? pathname === item.to : pathname.startsWith(item.to);
+            return (
+            <Link
               key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) => `shell-link${isActive ? ' is-active' : ''}`}
+              href={item.to}
+              className={`shell-link${isActive ? ' is-active' : ''}`}
             >
               <span>{item.label}</span>
               {item.badge === 'pending' && pendingCount > 0 && (
@@ -60,8 +65,9 @@ export function Shell({ children }: { children: ReactNode }) {
                   {pendingCount}
                 </span>
               )}
-            </NavLink>
-          ))}
+            </Link>
+            );
+          })}
         </nav>
 
         <div className="shell-foot">

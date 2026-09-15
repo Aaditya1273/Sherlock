@@ -166,7 +166,7 @@ The build history is the repository's own git log. No dates are asserted here th
 - `convex/crons.ts` — monitoring and housekeeping
 - The entire `src/` frontend: landing page, inbox, investigations, case file, claims queue, activity, chat, settings, sign-in, and the design system
 - `convex/agentMail.ts` — AgentMail inbox, threading and internal-only send
-- `vite.config.ts`, `eslint.config.js`, `tsconfig.json` — build and lint setup
+- `next.config.ts`, `eslint.config.js`, `tsconfig.json` — build and lint setup
 
 The product surface is deliberately small: six screens, one domain object, and no admin tooling. Anything that did not serve the forward-investigate-approve loop was left out.
 

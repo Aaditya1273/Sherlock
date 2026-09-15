@@ -329,7 +329,8 @@ convex/
   crons.ts               scheduled work
 
 src/
-  pages/                 Landing, Inbox, Investigations, CaseDetail,
+  app/                   Next.js App Router (static export)
+  screens/               Landing, Inbox, Investigations, CaseDetail,
                          Claims, Activity, Chat, Settings, SignIn
   components/            Shell, pieces, Logo
   lib/                   session, status, utils
@@ -349,7 +350,7 @@ npx convex dev          # one-time: authenticates and creates the deployment
 That second command also writes `convex/_generated/`, which the project needs to typecheck and build. Then, in another terminal:
 
 ```bash
-npm run dev             # frontend at http://localhost:5173
+npm run dev             # frontend at http://localhost:3000
 ```
 
 Set the keys on the deployment:
@@ -382,7 +383,7 @@ npm run build
 
 ```bash
 npx convex deploy       # backend
-npm run deploy          # builds and uploads the frontend to convex.site
+npm run deploy          # next build → ./out, uploaded to convex.site
 ```
 
 ---

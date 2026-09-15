@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { statusLabel, statusTone, pipelinePosition, PIPELINE, formatMoney } from '../lib/status';
 import { formatRelativeTime } from '../lib/utils';
 import './pieces.css';
@@ -121,7 +121,7 @@ export function CaseRow({
   currency?: string;
 }) {
   return (
-    <Link to={`/app/investigations/${id}`} className="case-row card">
+    <Link href={`/app/case?id=${id}`} className="case-row card">
       <div className="case-row-main">
         <span className="case-row-title">{title}</span>
         <span className="faint case-row-meta">

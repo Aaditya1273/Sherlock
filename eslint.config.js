@@ -5,7 +5,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'convex/_generated', 'node_modules', 'refrance'],
+    ignores: ['.next', 'out', 'next-env.d.ts', 'convex/_generated', 'node_modules', 'refrance'],
   },
   {
     files: ['src/**/*.{ts,tsx}'],

@@ -1,5 +1,8 @@
+'use client';
+
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAction, useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import type { Id } from '../../convex/_generated/dataModel';
@@ -18,9 +21,9 @@ import './CaseDetail.css';
  * and is editable — nothing leaves without the user having seen the words.
  */
 export function CaseDetail() {
-  const { id } = useParams<{ id: string }>();
+  const id = useSearchParams().get('id');
   const auth = useAuthArgs();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const data = useQuery(
     api.investigations.get,
@@ -42,7 +45,7 @@ export function CaseDetail() {
       <div className="empty">
         <h3>Case not found</h3>
         <p>It may have been deleted, or it belongs to another account.</p>
-        <Link to="/app/investigations" className="btn">
+        <Link href="/app/investigations" className="btn">
           Back to investigations
         </Link>
       </div>
@@ -67,7 +70,7 @@ export function CaseDetail() {
 
   return (
     <div className="case">
-      <Link to="/app/investigations" className="case-back faint">
+      <Link href="/app/investigations" className="case-back faint">
         ← Investigations
       </Link>
 
@@ -306,7 +309,7 @@ export function CaseDetail() {
           onClick={() =>
             run(async () => {
               await remove({ ...auth, id: investigation._id });
-              navigate('/app/investigations');
+              router.push('/app/investigations');
             })
           }
         >

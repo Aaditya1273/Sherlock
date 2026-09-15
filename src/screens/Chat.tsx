@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useAction, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuthArgs } from '../lib/session';
@@ -88,7 +90,7 @@ export function Chat() {
             {message.citedInvestigationIds && message.citedInvestigationIds.length > 0 && (
               <div className="bubble-cites">
                 {message.citedInvestigationIds.map((id) => (
-                  <Link key={id} to={`/app/investigations/${id}`}>
+                  <Link key={id} href={`/app/case?id=${id}`}>
                     Open case
                   </Link>
                 ))}
