@@ -1,0 +1,139 @@
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+}
+
+.shell-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-4);
+  border-right: 1px solid var(--border);
+  background: var(--bg-sunken);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.shell-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-size: var(--text-md);
+  letter-spacing: -0.02em;
+  color: var(--text);
+  padding: 0 var(--space-2);
+}
+.shell-brand:hover {
+  text-decoration: none;
+}
+
+.shell-nav nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.shell-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.45rem var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.shell-link:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+  text-decoration: none;
+}
+.shell-link.is-active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+.shell-badge {
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--attention);
+  color: var(--accent-on);
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shell-foot {
+  margin-top: auto;
+  padding: 0 var(--space-2);
+}
+.shell-note {
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.shell-main {
+  min-width: 0;
+  padding: var(--space-8) var(--space-8) var(--space-16);
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+  max-width: var(--content-max);
+}
+.page-sub {
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
+}
+.page-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* Sidebar becomes a top bar on small screens. */
+@media (max-width: 860px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .shell-nav {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-3) var(--space-4);
+    overflow-x: auto;
+  }
+  .shell-nav nav {
+    flex-direction: row;
+    gap: var(--space-1);
+  }
+  .shell-foot {
+    margin-top: 0;
+    margin-left: auto;
+  }
+  .shell-note {
+    display: none;
+  }
+  .shell-main {
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+}
