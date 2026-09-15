@@ -1,0 +1,169 @@
+.landing {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-16);
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-12);
+}
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Hero ------------------------------------------------------------------ */
+.hero {
+  padding: var(--space-10) 0 var(--space-16);
+  max-width: 660px;
+}
+.hero-title {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  margin-bottom: var(--space-5);
+}
+.hero-sub {
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin-bottom: var(--space-8);
+}
+.hero-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+.hero-note {
+  font-size: var(--text-sm);
+}
+
+/* Problem --------------------------------------------------------------- */
+.problem {
+  border-left: 2px solid var(--border-strong);
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-16);
+  max-width: 620px;
+}
+.problem p {
+  font-size: var(--text-md);
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+.problem-point {
+  color: var(--text) !important;
+  font-weight: 500;
+  margin-bottom: 0 !important;
+}
+
+.landing-h2 {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: var(--space-6);
+}
+
+/* Steps ----------------------------------------------------------------- */
+.how {
+  margin-bottom: var(--space-16);
+}
+.steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  max-width: 640px;
+}
+.step-index {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--accent);
+  padding-top: 2px;
+}
+.step-name {
+  font-size: var(--text-md);
+  margin-bottom: var(--space-1);
+}
+.step-detail {
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+/* Stack ----------------------------------------------------------------- */
+.stack {
+  margin-bottom: var(--space-16);
+}
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-3);
+}
+.stack-card {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.stack-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.stack-card p {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Trust ----------------------------------------------------------------- */
+.trust {
+  margin-bottom: var(--space-16);
+}
+.trust-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 640px;
+}
+.trust-list li {
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  color: var(--text-muted);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--border);
+}
+.trust-list strong {
+  color: var(--text);
+}
+
+.landing-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.landing-foot p {
+  font-size: var(--text-xs);
+  margin: 0;
+}

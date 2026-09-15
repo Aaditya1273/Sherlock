@@ -1,0 +1,104 @@
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  max-width: var(--content-max);
+}
+.stat {
+  padding: var(--space-4) var(--space-5);
+}
+
+.attention-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  max-width: var(--content-max);
+}
+.attention-block .banner {
+  justify-content: space-between;
+  align-items: center;
+}
+.attention-link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.section-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  margin-bottom: var(--space-3);
+}
+
+.mail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  color: inherit;
+  max-width: var(--content-max);
+  transition: border-color 0.12s ease;
+}
+.mail-row:not(.is-static):hover {
+  text-decoration: none;
+  border-color: var(--border-strong);
+}
+.mail-row-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mail-row-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.mail-subject {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mail-row-meta {
+  font-size: var(--text-xs);
+}
+.mail-dir {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.mail-dir-inbound {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.mail-dir-outbound {
+  background: var(--neutral-soft);
+  color: var(--neutral);
+}
+
+@media (max-width: 620px) {
+  .mail-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .mail-subject {
+    white-space: normal;
+  }
+  .attention-block .banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
