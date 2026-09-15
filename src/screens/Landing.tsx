@@ -40,9 +40,9 @@ const CHIPS = [
 ];
 
 /** `src` is a supplied wordmark in public/; `slug` a public-CDN icon; neither, a styled name. */
-const LOGO_ROWS: { name: string; src?: string; slug?: string; w?: number }[][] = [
+const LOGO_ROWS: { name: string; src?: string; icon?: string; slug?: string; w?: number }[][] = [
   [
-    { name: 'AgentMail' },
+    { name: 'AgentMail', icon: '/logos/agentmail.png' },
     { name: 'Firecrawl', src: '/firecrawl.png', w: 118 },
     { name: 'OpenAI', src: '/openai.png', w: 100 },
     { name: 'Convex', src: '/convex.png', w: 100 },
@@ -143,8 +143,8 @@ const CHAPTERS: Chapter[] = [
   },
 ];
 
-const STACK_TILES: { name: string; src?: string; slug?: string; w?: number; x: number; y: number; d: number }[] = [
-  { name: 'AgentMail', x: 8, y: 14, d: 0 },
+const STACK_TILES: { name: string; src?: string; icon?: string; slug?: string; w?: number; x: number; y: number; d: number }[] = [
+  { name: 'AgentMail', icon: '/logos/agentmail.png', x: 8, y: 14, d: 0 },
   { name: 'Firecrawl', src: '/firecrawl.png', w: 118, x: 60, y: 6, d: 1.2 },
   { name: 'OpenAI', src: '/openai.png', w: 100, x: 16, y: 44, d: 0.6 },
   { name: 'Convex', src: '/convex.png', w: 100, x: 72, y: 56, d: 1.8 },
@@ -250,6 +250,7 @@ export function Landing() {
                     <img className="wordmark" src={logo.src} alt={logo.name} loading="lazy" style={css({ '--w': `${logo.w ?? 110}px` })} />
                   ) : (
                     <>
+                      {logo.icon && <img src={logo.icon} alt="" width={20} height={20} loading="lazy" />}
                       {logo.slug && (
                         <img src={`https://cdn.simpleicons.org/${logo.slug}/9a9a9a`} alt="" width={20} height={20} loading="lazy" />
                       )}
@@ -269,7 +270,7 @@ export function Landing() {
           <aside className="manifesto-side is-left" aria-hidden="true">
             <Reveal className="tilt" delay={100}>
               <div className="tilt-card" style={css({ '--tilt': '-7deg' })}>
-                <div className="tilt-img is-a" />
+                <img className="tilt-img is-a" src="/ui/ordershipped.png" alt="" loading="lazy" />
                 <strong>Your order has shipped</strong>
                 <span>orders@merchant.example · £284.00</span>
               </div>
@@ -314,7 +315,7 @@ export function Landing() {
             </Reveal>
             <Reveal className="tilt" delay={340}>
               <div className="tilt-card" style={css({ '--tilt': '-4deg' })}>
-                <div className="tilt-img is-b" />
+                <img className="tilt-img is-b" src="/ui/priceadjust.png" alt="" loading="lazy" />
                 <strong>Price adjustment request</strong>
                 <span>Waiting for your approval</span>
               </div>
@@ -351,7 +352,9 @@ export function Landing() {
                   <img className="wordmark" src={tile.src} alt={tile.name} loading="lazy" style={css({ '--w': `${tile.w ?? 110}px` })} />
                 ) : (
                   <>
-                    {tile.slug ? (
+                    {tile.icon ? (
+                      <img src={tile.icon} alt="" width={22} height={22} loading="lazy" />
+                    ) : tile.slug ? (
                       <img src={`https://cdn.simpleicons.org/${tile.slug}/171717`} alt="" width={22} height={22} loading="lazy" />
                     ) : (
                       <span className="tile-mark">{tile.name.slice(0, 1)}</span>
@@ -614,29 +617,93 @@ function DashboardFrame() {
   );
 }
 
+/**
+ * The inbox, alive. Two cases play in a loop: messages arrive one at a time
+ * with a typing indicator before each reply, the thread settles, then clears
+ * for the next case. Pure CSS keyframes on a 16s timeline (see .scene-a /
+ * .scene-b in Landing.css); reduced-motion shows the first case at rest.
+ */
 function InboxVisual() {
   return (
-    <div className="vcard">
-      <div className="vcard-bar"><span className="dot" /><span className="dot" /><span className="dot" /><span className="vcard-bar-title">you@sherlock.example</span></div>
-      <div className="thread">
-        <div className="msg is-in" style={css({ '--i': 0 })}>
-          <div className="msg-head"><strong>you@gmail.example</strong><span>Fwd: Your order has shipped</span></div>
-          <p>---------- Forwarded message ---------<br />From: orders@merchant.example<br />Order #112-9988 · Total £284.00</p>
+    <div className="vcard vcard-live">
+      <div className="vcard-bar">
+        <span className="dot" /><span className="dot" /><span className="dot" />
+        <span className="vcard-bar-title">
+          <span className="bar-title-a">you@sherlock.example · headphones</span>
+          <span className="bar-title-b">you@sherlock.example · flight LHR → CDG</span>
+        </span>
+        <span className="live-pill"><span className="live-dot" />live</span>
+      </div>
+
+      <div className="stage">
+        {/* ---------------------------------------------------- scene A */}
+        <div className="scene scene-a" aria-label="A price-adjustment case, start to finish">
+          <Msg who="you" from="you@gmail.example" subject="Fwd: Your order has shipped">
+            ---------- Forwarded message ---------<br />From: orders@merchant.example<br />Order #112-9988 · Total £284.00
+          </Msg>
+          <Sys tone="brand">Investigation opened · merchant.example</Sys>
+          <Msg who="sherlock" out from="To support@merchant.example" subject="Price adjustment request — order #112-9988">
+            Your returns page states that price adjustments are honoured within 14 days of purchase. The item is now listed at £229.00 …
+            <em>Sent via Sherlock.</em>
+          </Msg>
+          <Typing who="merchant" />
+          <Msg who="merchant" from="support@merchant.example" subject="Re: Price adjustment request">
+            We&apos;ve refunded the £55.00 difference to your original payment method.
+          </Msg>
+          <Sys tone="positive">Resolved · £55.00 confirmed recovered</Sys>
         </div>
-        <div className="msg is-system" style={css({ '--i': 1 })}><span className="okmark is-brand" />Investigation opened · merchant.example</div>
-        <div className="msg is-out" style={css({ '--i': 2 })}>
-          <div className="msg-head"><strong>To support@merchant.example</strong><span>Price adjustment request — order #112-9988</span></div>
-          <p>Your returns page states that price adjustments are honoured within 14 days of purchase. The item is now listed at £229.00 …</p>
-          <em>Sent via Sherlock.</em>
+
+        {/* ---------------------------------------------------- scene B */}
+        <div className="scene scene-b" aria-hidden="true">
+          <Msg who="you" from="you@gmail.example" subject="Fwd: Your flight has been cancelled">
+            ---------- Forwarded message ---------<br />From: noreply@airline.example<br />Booking 7K2Q1 · LHR → CDG · 14 Oct
+          </Msg>
+          <Sys tone="brand">Investigation opened · airline.example</Sys>
+          <Typing who="sherlock" />
+          <Msg who="sherlock" out from="To customercare@airline.example" subject="Compensation claim — booking 7K2Q1">
+            Your cancellation was notified less than 14 days before departure. Under your published passenger-rights policy that entitles me to …
+            <em>Draft — waiting for your approval.</em>
+          </Msg>
+          <Sys tone="attention">Waiting for your approval · asking for £186.40</Sys>
+          <Sys tone="positive">Approved by you · sent</Sys>
         </div>
-        <div className="msg is-in" style={css({ '--i': 3 })}>
-          <div className="msg-head"><strong>support@merchant.example</strong><span>Re: Price adjustment request</span></div>
-          <p>We&apos;ve refunded the £55.00 difference to your original payment method.</p>
-        </div>
-        <div className="msg is-system is-positive" style={css({ '--i': 4 })}><span className="okmark" />Resolved · £55.00 confirmed recovered</div>
+      </div>
+
+      <div className="stage-progress" aria-hidden="true"><span /></div>
+    </div>
+  );
+}
+
+function Msg({ who, from, subject, out, children }: { who: 'you' | 'sherlock' | 'merchant'; from: string; subject: string; out?: boolean; children: React.ReactNode }) {
+  return (
+    <div className={`msg${out ? ' is-out' : ' is-in'}`}>
+      <Avatar who={who} />
+      <div className="msg-body">
+        <div className="msg-head"><strong>{from}</strong><span>{subject}</span></div>
+        <p>{children}</p>
       </div>
     </div>
   );
+}
+
+function Sys({ tone, children }: { tone: 'brand' | 'positive' | 'attention'; children: React.ReactNode }) {
+  return <div className={`msg is-system is-${tone}`}><span className="okmark" />{children}</div>;
+}
+
+function Typing({ who }: { who: 'sherlock' | 'merchant' }) {
+  return (
+    <div className={`msg is-typing${who === 'sherlock' ? ' is-out' : ' is-in'}`}>
+      <Avatar who={who} />
+      <span className="typing"><i /><i /><i /></span>
+    </div>
+  );
+}
+
+/** Who is speaking: the user (initial), Sherlock (brand mark), or the merchant (supplied mark). */
+function Avatar({ who }: { who: 'you' | 'sherlock' | 'merchant' }) {
+  if (who === 'you') return <span className="avatar avatar-you">Y</span>;
+  if (who === 'sherlock') return <span className="avatar"><img src="/logo.png" alt="" /></span>;
+  return <span className="avatar avatar-merchant"><img src="/npclogoui.png" alt="" /></span>;
 }
 
 function EvidenceVisual() {
@@ -718,8 +785,8 @@ Sent via Sherlock.`}</pre>
 
 /** Centre node with four satellites and flowing connectors. */
 function NetworkVisual() {
-  const nodes: { name: string; role: string; x: number; y: number; src?: string; w?: number }[] = [
-    { name: 'AgentMail', role: 'inbox', x: 12, y: 24 },
+  const nodes: { name: string; role: string; x: number; y: number; src?: string; icon?: string; w?: number }[] = [
+    { name: 'AgentMail', role: 'inbox', x: 12, y: 24, icon: '/logos/agentmail.png' },
     { name: 'Firecrawl', role: 'browser', x: 82, y: 22, src: '/firecrawl.png', w: 118 },
     { name: 'OpenAI', role: 'reasoning', x: 14, y: 76, src: '/openai.png', w: 100 },
     { name: 'Convex', role: 'memory', x: 84, y: 78, src: '/convex.png', w: 92 },
@@ -744,7 +811,14 @@ function NetworkVisual() {
       </div>
       {nodes.map((node, i) => (
         <div key={node.name} className="network-node" style={css({ '--x': `${node.x}%`, '--y': `${node.y}%`, '--d': `${i * 0.5}s` })}>
-          {node.src ? <img className="wordmark" src={node.src} alt={node.name} loading="lazy" style={css({ '--w': `${node.w ?? 110}px` })} /> : <strong>{node.name}</strong>}
+          {node.src ? (
+            <img className="wordmark" src={node.src} alt={node.name} loading="lazy" style={css({ '--w': `${node.w ?? 110}px` })} />
+          ) : (
+            <span className="network-node-name">
+              {node.icon && <img src={node.icon} alt="" width={18} height={18} loading="lazy" />}
+              <strong>{node.name}</strong>
+            </span>
+          )}
           <span>{node.role}</span>
         </div>
       ))}
