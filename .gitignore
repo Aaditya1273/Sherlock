@@ -50,3 +50,9 @@ coverage/
 # Misc
 *.log
 *.sw?
+
+# Local design reference clone, not part of this project
+refrance/
+
+# Playwright MCP scratch output
+.playwright-mcp/
