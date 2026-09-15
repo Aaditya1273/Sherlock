@@ -1,0 +1,42 @@
+{
+  "name": "sherlock",
+  "version": "1.0.0",
+  "description": "Sherlock \u2014 Give Your Inbox a Browser. An email-native AI agent that investigates the web, builds evidence, and helps you act.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:backend": "convex dev",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p convex/tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "codegen": "convex codegen",
+    "deploy": "static-hosting deploy --dist ./dist --component selfStaticHosting --build-command \"npm run build\"",
+    "upload": "static-hosting upload --dist ./dist --component selfStaticHosting"
+  },
+  "dependencies": {
+    "@convex-dev/rate-limiter": "^0.3.2",
+    "@convex-dev/self-static-hosting": "github:get-convex/self-static-hosting",
+    "convex": "^1.31.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.1.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.4",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.15.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
+  },
+  "license": "MIT"
+}
