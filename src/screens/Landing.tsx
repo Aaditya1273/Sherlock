@@ -34,13 +34,13 @@ const NAV = [
 ];
 
 const CHIPS = [
-  { label: 'Inbox', glyph: '✉' },
-  { label: 'Investigation', glyph: '⌕' },
-  { label: 'Evidence', glyph: '¶' },
+  { label: 'Inbox', glyph: 'mail' },
+  { label: 'Investigation', glyph: 'search' },
+  { label: 'Evidence', glyph: 'quote' },
 ];
 
 /** `src` is a supplied wordmark in public/; `slug` a public-CDN icon; neither, a styled name. */
-const LOGO_ROWS: { name: string; src?: string; icon?: string; slug?: string; w?: number }[][] = [
+const LOGO_ROWS: { name: string; src?: string; icon?: string; slug?: string; w?: number; lightBg?: boolean }[][] = [
   [
     { name: 'AgentMail', icon: '/logos/agentmail.png' },
     { name: 'Firecrawl', src: '/firecrawl.png', w: 118 },
@@ -49,11 +49,10 @@ const LOGO_ROWS: { name: string; src?: string; icon?: string; slug?: string; w?:
     { name: 'Vercel', src: '/vercel.png', w: 104 },
   ],
   [
-    { name: 'Next.js', slug: 'nextdotjs' },
-    { name: 'React', slug: 'react' },
-    { name: 'TypeScript', slug: 'typescript' },
-    { name: 'GitHub', slug: 'github' },
-    { name: 'Geist' },
+    { name: 'Next.js', icon: '/logos/nextjs.png' },
+    { name: 'React', icon: '/logos/reactjs.png' },
+    { name: 'TypeScript', icon: '/logos/ts.png' },
+    { name: 'GitHub', src: '/github.png', w: 104, lightBg: true },
   ],
 ];
 
@@ -64,7 +63,7 @@ type Chapter = {
   lede: string;
   link: string;
   visual: 'inbox' | 'evidence' | 'approval' | 'network';
-  minis: { title: string; body: string }[];
+  minis: { glyph: string; title: string; body: string }[];
   principle: { quote: string; source: string; tag: string };
 };
 
@@ -73,73 +72,57 @@ const CHAPTERS: Chapter[] = [
     id: 'inbox',
     eyebrow: 'Inbox',
     title: 'It starts with an email',
-    lede: 'Forward any receipt, booking or billing email to your Sherlock address. That is the whole interaction — there is no form to fill and nothing to install.',
+    lede: 'Forward a receipt. That is the whole interaction.',
     link: 'Explore the inbox',
     visual: 'inbox',
     minis: [
-      { title: 'Forward anything', body: 'Purchase confirmations, cancellations, subscription changes, billing notices. If it cost you money, it can be investigated.' },
-      { title: 'Replies stay threaded', body: 'Claims go out from your Sherlock inbox, so a merchant reply lands back on the case that started it — never in a new one.' },
-      { title: 'Retries are harmless', body: 'Every inbound message is deduplicated by id. A webhook delivered twice opens one case, not two.' },
+      { glyph: 'mail', title: 'Forward anything', body: 'Receipts, bookings, bills, cancellations.' },
+      { glyph: 'reply', title: 'Replies stay threaded', body: 'Merchant answers land on the same case.' },
+      { glyph: 'repeat', title: 'Retries are harmless', body: 'One email, one case — even if delivered twice.' },
     ],
-    principle: {
-      quote: 'Sherlock drafts. You approve. Nothing is sent without you reading it first.',
-      source: 'Operating rule',
-      tag: 'Enforced by the state machine',
-    },
+    principle: { quote: 'Sherlock drafts. You approve.', source: 'Operating rule', tag: 'Enforced by the state machine' },
   },
   {
     id: 'investigation',
     eyebrow: 'Investigation',
     title: 'Read what the merchant published',
-    lede: "Firecrawl searches for and reads the merchant's own refund, price-adjustment and cancellation pages — scoped to their domain, so the source is the policy, not a blog's summary of it.",
+    lede: "Firecrawl reads the merchant's own policy pages — not a blog's summary of them.",
     link: 'See how evidence is built',
     visual: 'evidence',
     minis: [
-      { title: 'Three targeted searches', body: 'Refund policy, price adjustment, support contact. Not a crawl of the whole site — the clause lives on a known kind of page.' },
-      { title: 'Verbatim excerpts', body: 'Each evidence card carries the source URL and the exact wording it relies on. Click through and read the page Sherlock read.' },
-      { title: 'Allowed to find nothing', body: 'A policy that exists but does not cover your case is a no. A closed window is a no. Sherlock closes the case and says so.' },
+      { glyph: 'search', title: 'Three searches', body: 'Refunds, price adjustment, support contact.' },
+      { glyph: 'quote', title: 'Verbatim quotes', body: 'Every fact links the page and the exact clause.' },
+      { glyph: 'none', title: 'Allowed to find nothing', body: 'No clause, no case — and it says so.' },
     ],
-    principle: {
-      quote: 'Assessment and drafting are separate model calls. The first is allowed to say no; the second only runs after a yes.',
-      source: 'Reasoning design',
-      tag: 'Why a thin case never becomes a confident letter',
-    },
+    principle: { quote: 'Assess first. Draft only after a yes.', source: 'Reasoning design', tag: 'Two model calls, never one' },
   },
   {
     id: 'approval',
     eyebrow: 'Approval and follow-through',
-    title: 'Approve, send, and keep the case alive',
-    lede: 'When the evidence supports a claim, Sherlock drafts the email and stops. You read it, edit it, and decide. Once sent, the case stays open until it reaches an outcome.',
+    title: 'Approve, send, keep it alive',
+    lede: 'Sherlock drafts and stops. You decide. Then it watches.',
     link: 'See the approval boundary',
     visual: 'approval',
     minis: [
-      { title: 'A human sends every email', body: 'The only path to an outbound message is an authenticated approve action on a case in AWAITING_APPROVAL. There is no other edge.' },
-      { title: 'Nothing is optimistic', body: 'The case is marked sent only after AgentMail confirms. A failed send leaves the draft intact and tells you nothing was delivered.' },
-      { title: 'Watched pages, chased claims', body: 'A monitored price page is re-read daily and compared by hash. An unanswered claim gets a drafted nudge — never an automatic one.' },
+      { glyph: 'hand', title: 'A human sends every email', body: 'Only your approve action can send.' },
+      { glyph: 'check', title: 'Nothing is optimistic', body: 'Marked sent only once AgentMail confirms.' },
+      { glyph: 'clock', title: 'Watched and chased', body: 'Daily page checks. Nudges drafted, never auto-sent.' },
     ],
-    principle: {
-      quote: 'Potential and recovered are separate figures. Money only counts as recovered once a merchant actually confirms it.',
-      source: 'Dashboard rule',
-      tag: 'How the totals avoid counting hope as cash',
-    },
+    principle: { quote: 'Estimates stay estimates. Recovered means confirmed.', source: 'Dashboard rule', tag: 'Two separate figures' },
   },
   {
     id: 'security',
     eyebrow: 'Security',
     title: 'Untrusted by default',
-    lede: "Sherlock's whole job is to read text written by strangers and then act on it. Every external input passes one boundary before any model sees it, and every case-data function authorises on the server.",
+    lede: 'Every email and page is sanitised before a model sees it.',
     link: 'Read the trust model',
     visual: 'network',
     minis: [
-      { title: 'External text is data', body: 'Forwarded mail, scraped pages and replies are sanitised: zero-width characters stripped, instruction-shaped spans neutralised, the block labelled untrusted.' },
-      { title: 'Authorised on the server', body: 'requireOwner is the single gate. The React guard hides UI; it protects nothing and is not relied upon.' },
-      { title: 'Keys never reach the browser', body: 'Credentials live in the Convex environment. The client learns only whether one is present. Logged details are redacted first.' },
+      { glyph: 'shield', title: 'Text is data', body: 'Instruction-shaped spans are neutralised.' },
+      { glyph: 'key', title: 'Server-side auth', body: 'One gate on every case-data function.' },
+      { glyph: 'eyeoff', title: 'Keys stay server-side', body: 'The browser never sees a credential.' },
     ],
-    principle: {
-      quote: 'A page that tries to give the agent instructions gets classified as a fact about the page, flagged in your inbox, and never followed.',
-      source: 'Injection boundary',
-      tag: 'core/untrusted.ts, unit tested',
-    },
+    principle: { quote: 'A page that gives orders gets flagged, not followed.', source: 'Injection boundary', tag: 'core/untrusted.ts, unit tested' },
   },
 ];
 
@@ -148,8 +131,14 @@ const STACK_TILES: { name: string; src?: string; icon?: string; slug?: string; w
   { name: 'Firecrawl', src: '/firecrawl.png', w: 118, x: 60, y: 6, d: 1.2 },
   { name: 'OpenAI', src: '/openai.png', w: 100, x: 16, y: 44, d: 0.6 },
   { name: 'Convex', src: '/convex.png', w: 100, x: 72, y: 56, d: 1.8 },
-  { name: 'Next.js', slug: 'nextdotjs', x: 12, y: 72, d: 0.9 },
-  { name: 'TypeScript', slug: 'typescript', x: 48, y: 82, d: 1.5 },
+  { name: 'Next.js', icon: '/logos/nextjs.png', x: 12, y: 72, d: 0.9 },
+  { name: 'TypeScript', icon: '/logos/ts.png', x: 48, y: 82, d: 1.5 },
+];
+
+/** Square marks for the closing row, in stack order. */
+const CTA_MARKS = [
+  '/logos/agentmail.png', '/logos/firecrawl.png', '/logos/openai.png', '/logos/convex.png',
+  '/logos/nextjs.png', '/logos/reactjs.png', '/logos/ts.png', '/logos/vercel.png',
 ];
 
 const LIMITS = [
@@ -160,12 +149,12 @@ const LIMITS = [
 ];
 
 const FAQ = [
-  { q: 'Will it email a company without asking me?', a: 'No. The state machine has exactly one edge into SENT and it starts from AWAITING_APPROVAL. Research and drafting are automatic; contacting anyone is not.' },
-  { q: 'What if I am not actually owed anything?', a: 'That is a normal outcome. Reasoning can conclude there is no case, close the investigation, and tell you why — with the evidence it used.' },
-  { q: 'Does it need my bank or card?', a: 'No. Sherlock reads one forwarded email and public policy pages. It has no access to your finances.' },
-  { q: 'What happens if a page tells the agent to do something?', a: 'It gets classified as a fact about the page and flagged in your inbox as suspicious content. It is never followed.' },
-  { q: 'How does a merchant reply reach the right case?', a: 'By thread id. Claims are sent from your Sherlock inbox, so the reply arrives on the same thread and is routed to the case that opened it.' },
-  { q: 'What does "recovered" actually mean?', a: 'A figure a merchant confirmed in a reply, or one you entered by hand on the case. Estimates are labelled as estimates everywhere.' },
+  { q: 'Will it email a company without asking me?', a: 'No. Only your approve action can send.' },
+  { q: 'What if I am not owed anything?', a: 'It closes the case and shows the evidence it used.' },
+  { q: 'Does it need my bank or card?', a: 'No. One forwarded email and public policy pages.' },
+  { q: 'What if a page tells the agent what to do?', a: 'It gets flagged as suspicious, never followed.' },
+  { q: 'How does a reply reach the right case?', a: 'By thread id — replies land where the claim started.' },
+  { q: 'What does "recovered" mean?', a: 'A figure the merchant confirmed. Estimates are labelled.' },
 ];
 
 const CHANGELOG = [
@@ -204,8 +193,7 @@ export function Landing() {
             Give your inbox a browser.
           </h1>
           <p className="hero-lede rise" style={css({ '--delay': '160ms' })}>
-            Forward an email. Sherlock investigates the web, finds what you&apos;re entitled to,
-            builds the evidence, and helps you act.
+            Forward an email. Sherlock finds what you&apos;re owed — with the evidence.
           </p>
           <div className="hero-actions rise" style={css({ '--delay': '240ms' })}>
             <Link href="/app" className="lbtn lbtn-primary">Try Sherlock</Link>
@@ -247,7 +235,7 @@ export function Landing() {
               {row.map((logo) => (
                 <span key={logo.name} className="logo">
                   {logo.src ? (
-                    <img className="wordmark" src={logo.src} alt={logo.name} loading="lazy" style={css({ '--w': `${logo.w ?? 110}px` })} />
+                    <img className={`wordmark${logo.lightBg ? ' is-lightbg' : ''}`} src={logo.src} alt={logo.name} loading="lazy" style={css({ '--w': `${logo.w ?? 110}px` })} />
                   ) : (
                     <>
                       {logo.icon && <img src={logo.icon} alt="" width={20} height={20} loading="lazy" />}
@@ -270,7 +258,7 @@ export function Landing() {
           <aside className="manifesto-side is-left" aria-hidden="true">
             <Reveal className="tilt" delay={100}>
               <div className="tilt-card" style={css({ '--tilt': '-7deg' })}>
-                <img className="tilt-img is-a" src="/ui/ordershipped.png" alt="" loading="lazy" />
+                <span className="tilt-img-wrap"><img className="tilt-img is-a" src="/ui/ordershipped.png" alt="" loading="lazy" /></span>
                 <strong>Your order has shipped</strong>
                 <span>orders@merchant.example · £284.00</span>
               </div>
@@ -290,20 +278,9 @@ export function Landing() {
               The workflow is the problem.
             </p>
             <p className="manifesto-line">
-              Sherlock is the{' '}
-              <span className="marker">email-native agent that finds what you&apos;re owed</span>{' '}
-              — and shows its work.
+              An <span className="marker">email-native agent that finds what you&apos;re owed</span> — and shows its work.
             </p>
-            <p className="manifesto-rhythm">
-              It reads. It researches. It cites.
-              <br />
-              And it stops before it sends.
-            </p>
-            <p className="manifesto-close">
-              You deserve more than a refund policy you never read.
-              <br />
-              You deserve the £14.
-            </p>
+            <p className="manifesto-rhythm">It reads. It cites. It stops before it sends.</p>
           </Reveal>
 
           <aside className="manifesto-side is-right" aria-hidden="true">
@@ -315,7 +292,7 @@ export function Landing() {
             </Reveal>
             <Reveal className="tilt" delay={340}>
               <div className="tilt-card" style={css({ '--tilt': '-4deg' })}>
-                <img className="tilt-img is-b" src="/ui/priceadjust.png" alt="" loading="lazy" />
+                <span className="tilt-img-wrap"><img className="tilt-img is-b" src="/ui/priceadjust.png" alt="" loading="lazy" /></span>
                 <strong>Price adjustment request</strong>
                 <span>Waiting for your approval</span>
               </div>
@@ -335,10 +312,7 @@ export function Landing() {
           <Reveal className="integrations-copy">
             <span className="eyebrow"><span className="eyebrow-dot" />Stack</span>
             <h2>Four systems, one agent</h2>
-            <p>
-              AgentMail is the inbox. Firecrawl is the browser. OpenAI is the reasoning. Convex is
-              the memory and the live nervous system. Each does real work in the product.
-            </p>
+            <p>Inbox, browser, reasoning, memory. Each does real work.</p>
             <Link href="/app" className="text-link">Open Sherlock <span aria-hidden="true">→</span></Link>
           </Reveal>
           <Reveal className="dotfield" delay={120}>
@@ -380,10 +354,7 @@ export function Landing() {
           <Reveal className="limits-copy">
             <span className="eyebrow"><span className="eyebrow-dot" />Built with limits</span>
             <h2>Bounded by construction</h2>
-            <p>
-              It writes to companies on your behalf. That deserves hard edges — enforced in the
-              state machine and the schema, not in a prompt.
-            </p>
+            <p>Hard edges, enforced in code — not in a prompt.</p>
             <dl className="limit-list">
               {LIMITS.map((limit, index) => (
                 <div key={limit.label} className="limit" style={css({ '--i': index })}>
@@ -418,8 +389,9 @@ export function Landing() {
       <section className="chapter is-muted">
         <div className="wrap">
           <Reveal className="chapter-head is-centered">
+            <img className="faq-mark" src="/Straight answers.png" alt="" width={44} height={44} loading="lazy" />
             <h2>Straight answers</h2>
-            <p>The questions worth asking of anything that emails people for you.</p>
+            <p>What you&apos;d ask anything that emails people for you.</p>
           </Reveal>
           <div className="bento">
             {FAQ.map((item, index) => (
@@ -463,22 +435,15 @@ export function Landing() {
             <h2>Forward one email.</h2>
           </Reveal>
           <Reveal delay={100}>
-            <p>
-              Sherlock opens a case, reads the merchant&apos;s policy, and tells you whether you
-              are owed anything — or that you are not.
-            </p>
+            <p>Sherlock reads the policy and tells you if you&apos;re owed — or not.</p>
           </Reveal>
           <Reveal delay={200}>
             <Link href="/app" className="lbtn lbtn-invert">Try Sherlock</Link>
           </Reveal>
           <Reveal className="cta-dots" delay={320}>
-            {LOGO_ROWS.flat().slice(0, 8).map((logo) => (
-              <span key={logo.name} className="cta-dot" aria-hidden="true">
-                {logo.slug ? (
-                  <img src={`https://cdn.simpleicons.org/${logo.slug}/ffffff`} alt="" width={14} height={14} loading="lazy" />
-                ) : (
-                  logo.name.slice(0, 1)
-                )}
+            {CTA_MARKS.map((mark) => (
+              <span key={mark} className="cta-dot" aria-hidden="true">
+                <img src={mark} alt="" width={16} height={16} loading="lazy" />
               </span>
             ))}
           </Reveal>
@@ -513,9 +478,9 @@ function ChapterSection({ chapter }: { chapter: Chapter }) {
         <div className="minis">
           {chapter.minis.map((mini, index) => (
             <Reveal key={mini.title} className="mini" delay={index * 90}>
+              <span className="mini-glyph" aria-hidden="true"><Glyph name={mini.glyph} /></span>
               <h3>{mini.title}</h3>
               <p>{mini.body}</p>
-              <Link href="/app" className="mini-link">Learn more <span aria-hidden="true">→</span></Link>
             </Reveal>
           ))}
         </div>
@@ -535,6 +500,30 @@ function ChapterSection({ chapter }: { chapter: Chapter }) {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/** A dozen line icons on one grid, so every mini reads with the same weight. */
+const GLYPHS: Record<string, string> = {
+  mail: 'M3 6h18v12H3z M3 7l9 6 9-6',
+  reply: 'M9 14 4 9l5-5 M4 9h10a6 6 0 0 1 6 6v4',
+  repeat: 'M17 2l4 4-4 4 M3 11V9a4 4 0 0 1 4-4h14 M7 22l-4-4 4-4 M21 13v2a4 4 0 0 1-4 4H3',
+  search: 'M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14z M20 20l-4-4',
+  quote: 'M7 7h4v4H7v3a3 3 0 0 0 3 3 M15 7h4v4h-4v3a3 3 0 0 0 3 3',
+  none: 'M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18z M5.6 5.6l12.8 12.8',
+  hand: 'M8 13V5a1.5 1.5 0 0 1 3 0v6 M11 11V4a1.5 1.5 0 0 1 3 0v7 M14 11V6a1.5 1.5 0 0 1 3 0v8 M8 13l-2.2-2.2a1.5 1.5 0 0 0-2.1 2.1L8 17.5A6 6 0 0 0 12.5 20h1A5.5 5.5 0 0 0 19 14.5V14',
+  check: 'M20 6 9 17l-5-5',
+  clock: 'M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18z M12 7v5l3 2',
+  shield: 'M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z',
+  key: 'M14 4a6 6 0 1 0 2.4 11.5L21 20v-3h-3v-2l-1.6-1.6A6 6 0 0 0 14 4z M13 9h.01',
+  eyeoff: 'M3 3l18 18 M10.6 5.2A10 10 0 0 1 21 12a10.5 10.5 0 0 1-3 3.6 M6.5 6.6A10.4 10.4 0 0 0 3 12a10 10 0 0 0 13.4 4.9',
+};
+
+function Glyph({ name }: { name: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={GLYPHS[name] ?? GLYPHS.check} />
+    </svg>
   );
 }
 
@@ -744,39 +733,47 @@ function EvidenceVisual() {
   );
 }
 
+/**
+ * Approval, at a glance: the claim as three figures, one button, and the
+ * outcome. The card loops between "waiting for you" and "sent" so the
+ * boundary is something you watch happen, not read about.
+ */
 function ApprovalVisual() {
   return (
-    <div className="vcard">
-      <div className="vcard-bar"><span className="dot" /><span className="dot" /><span className="dot" /><span className="vcard-bar-title">case · waiting for your approval</span></div>
+    <div className="vcard approval-live">
+      <div className="vcard-bar">
+        <span className="dot" /><span className="dot" /><span className="dot" />
+        <span className="vcard-bar-title">case · wireless headphones</span>
+      </div>
       <div className="approval">
         <div className="approval-draft">
-          <div className="approval-field"><label>To</label><span>support@merchant.example</span></div>
-          <div className="approval-field"><label>Subject</label><span>Price adjustment request — order #112-9988</span></div>
-          <pre>{`Hello,
-
-I bought a pair of wireless headphones on 6 September (order #112-9988) for £284.00. Your returns page states that price adjustments are honoured within 14 days of purchase, and the same item is now listed at £229.00.
-
-Could you refund the £55.00 difference to my original payment method?
-
-Thank you.
-
-Sent via Sherlock.`}</pre>
+          <div className="claim-figures">
+            <div className="claim-figure"><small>Paid</small><strong>£284.00</strong></div>
+            <div className="claim-arrow" aria-hidden="true">→</div>
+            <div className="claim-figure"><small>Now listed</small><strong>£229.00</strong></div>
+            <div className="claim-arrow" aria-hidden="true">=</div>
+            <div className="claim-figure is-ask"><small>Asking for</small><strong>£55.00</strong></div>
+          </div>
+          <div className="claim-cite">
+            <span className="ev-kind">policy · merchant.example/help/returns</span>
+            <span>&ldquo;Price adjustments honoured within 14 days.&rdquo;</span>
+          </div>
+          <div className="claim-to"><span>To</span><strong>support@merchant.example</strong></div>
           <div className="approval-actions">
-            <span className="lbtn lbtn-primary lbtn-sm is-pulse">Approve and send</span>
+            <span className="approve-btn"><span className="approve-idle">Approve and send</span><span className="approve-done">Sent ✓</span></span>
             <span className="lbtn lbtn-secondary lbtn-sm">Reject</span>
-            <small>Nothing is sent until you press approve.</small>
+            <span className="approve-state"><span className="state-idle">Waiting for you</span><span className="state-done">Waiting for a reply</span></span>
           </div>
         </div>
         <div className="approval-side">
           <span className="mini-eyebrow">After sending</span>
-          <div className="monitor-row"><strong>Reply chase</strong><span>in 5 days · 2 checks left</span></div>
-          <div className="monitor-row"><strong>Page watch</strong><span>merchant.example/product · daily</span></div>
           <div className="monitor-log">
-            <span style={css({ '--i': 0 })}>Day 1 · baseline captured</span>
+            <span style={css({ '--i': 0 })}>Day 1 · baseline</span>
             <span style={css({ '--i': 1 })}>Day 6 · no change</span>
             <span style={css({ '--i': 2 })}>Day 8 · no change</span>
             <span className="is-brand" style={css({ '--i': 3 })}>Day 9 · page changed →</span>
           </div>
+          <div className="monitor-row"><strong>Reply chase</strong><span>in 5 days</span></div>
         </div>
       </div>
     </div>

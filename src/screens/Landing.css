@@ -228,6 +228,8 @@
   mix-blend-mode: multiply; display: block;
 }
 .logo img.wordmark { opacity: 0.55; transition: opacity 0.2s ease; }
+/* An off-white canvas (not pure white) survives multiply; push it to white. */
+.landing img.wordmark.is-lightbg { filter: brightness(1.04) contrast(1.6); }
 .logo:hover img.wordmark { opacity: 1; }
 .tile img.wordmark { height: 22px; width: calc(var(--w, 110px) * 0.8); }
 .network-node img.wordmark { height: 20px; width: calc(var(--w, 110px) * 0.78); margin-bottom: 3px; }
@@ -261,10 +263,12 @@
 }
 .tilt-card strong { color: var(--ink); font-size: 13px; }
 .tilt-card.is-small { width: 170px; }
-.tilt-img { display: block; width: 100%; height: 84px; border-radius: var(--radius-md); margin-bottom: 4px; object-fit: cover; background: var(--paper-subtle); }
-/* Crop toward the lower half so the third-party storefront chrome at the top
-   of the illustration stays out of frame; the parcels and "Order shipped!" remain. */
-.tilt-img.is-a { object-position: 50% 78%; }
+.tilt-img-wrap { display: block; height: 84px; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 4px; background: var(--paper-subtle); }
+.tilt-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* The shipping illustration is dominated by a retailer's trademark; showing it
+   would imply an affiliation. Zoom to the skyline band along the bottom so
+   the card reads as "a delivery, somewhere" without anyone's logo. */
+.tilt-img.is-a { object-position: 50% 100%; transform: scale(3.6); transform-origin: 50% 100%; }
 .tilt-img.is-b { object-position: center; }
 .mini-eyebrow { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
 
@@ -292,7 +296,8 @@
 .mini { display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-4); border-top: 1px solid var(--line); }
 .mini h3 { font-size: var(--text-base); font-weight: 600; }
 .mini p { font-size: var(--text-sm); line-height: 1.6; color: var(--ink-muted); }
-.mini-link { font-size: var(--text-sm); font-weight: 500; color: var(--ink); margin-top: 2px; }
+.mini-glyph { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--paper-subtle); border: 1px solid var(--line); color: var(--brand); font-size: 14px; margin-bottom: var(--space-1); }
+.mini p { font-size: var(--text-sm); }
 
 .principle {
   margin: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); padding: var(--space-6);
@@ -382,7 +387,8 @@
 @keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .scene > *, .bar-title-a, .bar-title-b, .stage-progress span, .live-dot, .typing i { animation: none; }
+  .scene > *, .bar-title-a, .bar-title-b, .stage-progress span, .live-dot, .typing i, .approve-btn, .approve-btn > span, .approve-state > span { animation: none; }
+  .approve-done, .state-done { display: none; }
   .scene-a > * { opacity: 1; }
   .scene-a > .is-typing, .scene-b { display: none; }
   .bar-title-b { display: none; }
@@ -410,7 +416,27 @@
 
 /* approval visual ------------------------------------------------------- */
 .approval { display: grid; grid-template-columns: 1.5fr 1fr; }
-.approval-draft { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+.approval-draft { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.claim-figures { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.claim-figure { display: flex; flex-direction: column; gap: 2px; }
+.claim-figure small { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
+.claim-figure strong { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.claim-figure.is-ask strong { color: var(--attention); }
+.claim-arrow { color: var(--ink-faint); font-size: 1.2rem; }
+.claim-cite { display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--ink-soft); border-left: 2px solid var(--line); padding-left: var(--space-3); }
+.claim-to { display: flex; gap: var(--space-2); font-size: 13px; color: var(--ink-faint); }
+.claim-to strong { color: var(--ink); font-weight: 500; }
+/* the approve button and its state flip on a 6s loop */
+.approve-btn, .approve-state { position: relative; display: inline-grid; }
+.approve-btn { height: 32px; padding: 0 var(--space-3); border-radius: var(--radius-lg); background: var(--ink); color: #fff; font-size: var(--text-sm); font-weight: 500; align-items: center; animation: approve-bg 6s var(--ease) infinite, pulse-ring 2.2s ease-out infinite; }
+.approve-btn > span, .approve-state > span { grid-area: 1 / 1; white-space: nowrap; animation: 6s var(--ease) infinite both; }
+/* Written under the parent so these outrank the `> span` shorthand above. */
+.approve-btn > .approve-idle, .approve-state > .state-idle { animation-name: flip-idle; }
+.approve-btn > .approve-done, .approve-state > .state-done { animation-name: flip-done; }
+.approve-state { font-size: 11px; color: var(--ink-faint); }
+@keyframes flip-idle { 0%, 45% { opacity: 1; transform: none; } 52%, 94% { opacity: 0; transform: translateY(-6px); } 100% { opacity: 1; transform: none; } }
+@keyframes flip-done { 0%, 48% { opacity: 0; transform: translateY(6px); } 55%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes approve-bg { 0%, 48% { background: var(--ink); } 55%, 92% { background: var(--positive); } 100% { background: var(--ink); } }
 .approval-field { display: grid; grid-template-columns: 64px 1fr; gap: var(--space-3); font-size: 13px; border-bottom: 1px solid var(--line-soft); padding-bottom: 8px; }
 .approval-field label { margin: 0; font-size: 12px; color: var(--ink-faint); }
 .approval-field span { color: var(--ink); }
@@ -499,6 +525,7 @@
 }
 
 /* ------------------------------------------------------------------ bento -- */
+.faq-mark { width: 44px; height: 44px; object-fit: contain; margin-bottom: var(--space-1); }
 .bento { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
 .bento-card { border: 1px solid var(--line); border-radius: 16px; background: var(--paper); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease); }
 .bento-card:hover { box-shadow: 0 12px 36px rgba(23, 23, 23, 0.07); transform: translateY(-2px); }
@@ -529,7 +556,8 @@
 .cta p { max-width: 460px; line-height: 1.6; }
 .cta-dots { display: flex; gap: 10px; margin-top: var(--space-6); }
 .cta-dot { width: 28px; height: 28px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); display: grid; place-items: center; color: #cbd5e1; font-size: 11px; font-weight: 600; }
-.cta-dot img { width: 14px; height: 14px; opacity: 0.85; }
+.cta-dot { background: #fff; border-color: #fff; overflow: hidden; }
+.cta-dot img { width: 16px; height: 16px; object-fit: contain; }
 
 /* ----------------------------------------------------------------- footer -- */
 .foot { border-top: 1px solid var(--line-soft); padding: var(--space-16) 0 var(--space-8); }
